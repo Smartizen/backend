@@ -1,9 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { CreateSeasonDto } from './dto/create-season.dto';
 import { UpdateSeasonDto } from './dto/update-season.dto';
+import { Season } from './entities/season.entity';
 
 @Injectable()
 export class SeasonService {
+  constructor(
+    @Inject('SeasonRepository')
+    private readonly seasonRepository: typeof Season,
+  ) {}
+
   create(createSeasonDto: CreateSeasonDto) {
     return 'This action adds a new season';
   }

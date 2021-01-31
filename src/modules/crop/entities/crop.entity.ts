@@ -7,8 +7,10 @@ import {
   BelongsTo,
   ForeignKey,
   AutoIncrement,
+  HasMany,
 } from 'sequelize-typescript';
 import { Farm } from '../../farm/entities/farm.entity';
+import { Season } from '../../season/entities/season.entity';
 
 @Table
 export class Crop extends Model<Crop> {
@@ -26,4 +28,7 @@ export class Crop extends Model<Crop> {
 
   @BelongsTo(() => Farm)
   farm: Farm;
+
+  @HasMany(() => Season)
+  seasons: Season[];
 }

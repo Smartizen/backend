@@ -6,7 +6,7 @@ import { User } from '../../modules/users/user.entity';
 import { Manage } from '../../modules/manage/entities/manage.entity';
 import { Own } from '../../modules/own/entities/own.entity';
 import { Farm } from '../../modules/farm/entities/farm.entity';
-// import { Season } from 'src/modules/season/entities/season.entity';
+import { Season } from '../../modules/season/entities/season.entity';
 import { Crop } from '../../modules/crop/entities/crop.entity';
 // import { DeviceBelong } from 'src/modules/device-belong/entities/device-belong.entity';
 // import { Device } from 'src/modules/device/entities/device.entity';
@@ -36,7 +36,7 @@ export const databaseProviders = [
         Manage,
         Own,
         Farm,
-        // Season,
+        Season,
         Crop,
         // DeviceBelong,
         // Device,
