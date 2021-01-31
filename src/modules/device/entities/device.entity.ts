@@ -9,9 +9,11 @@ import {
   UpdatedAt,
   DeletedAt,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
 import { User } from '../../users/user.entity';
 import { Buy } from '../../buy/entities/buy.entity';
+import { DeviceBelong } from '../../device-belong/entities/device-belong.entity';
 
 @Table
 export class Device extends Model<Device> {
@@ -43,4 +45,7 @@ export class Device extends Model<Device> {
   @DeletedAt
   @Column({ field: 'deleted_at' })
   deletedAt: Date;
+
+  @HasMany(() => DeviceBelong)
+  deviceBelong: DeviceBelong[];
 }

@@ -8,9 +8,11 @@ import {
   ForeignKey,
   AutoIncrement,
   HasMany,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { Farm } from '../../farm/entities/farm.entity';
 import { Season } from '../../season/entities/season.entity';
+import { DeviceBelong } from '../../device-belong/entities/device-belong.entity';
 
 @Table
 export class Crop extends Model<Crop> {
@@ -31,4 +33,7 @@ export class Crop extends Model<Crop> {
 
   @HasMany(() => Season)
   seasons: Season[];
+
+  @HasMany(() => DeviceBelong)
+  devides: DeviceBelong[];
 }
