@@ -1,9 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { CreateBuyDto } from './dto/create-buy.dto';
 import { UpdateBuyDto } from './dto/update-buy.dto';
+import { Buy } from './entities/buy.entity';
 
 @Injectable()
 export class BuyService {
+  constructor(
+    @Inject('BuyRepository')
+    private readonly buyRepository: typeof Buy,
+  ) {}
+
   create(createBuyDto: CreateBuyDto) {
     return 'This action adds a new buy';
   }

@@ -14,6 +14,8 @@ import {
 import { Manage } from '../manage/entities/manage.entity';
 import { Farm } from '../farm/entities/farm.entity';
 import { Own } from '../own/entities/own.entity';
+import { Device } from '../device/entities/device.entity';
+import { Buy } from '../buy/entities/buy.entity';
 @Table
 export class User extends Model<User> {
   @AutoIncrement
@@ -95,4 +97,7 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => Farm, () => Own)
   farms: Farm[];
+
+  @BelongsToMany(() => Device, () => Buy)
+  devices: Device[];
 }

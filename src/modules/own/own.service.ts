@@ -1,9 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { CreateOwnDto } from './dto/create-own.dto';
 import { UpdateOwnDto } from './dto/update-own.dto';
+import { Own } from './entities/own.entity';
 
 @Injectable()
 export class OwnService {
+  constructor(
+    @Inject('OwnRepository')
+    private readonly ownRepository: typeof Own,
+  ) {}
+
   create(createOwnDto: CreateOwnDto) {
     return 'This action adds a new own';
   }

@@ -3,12 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBuyDto {
   @ApiProperty()
-  @IsUUID()
   @IsNotEmpty()
   userId: string;
 
   @ApiProperty()
-  @IsUUID()
   @IsNotEmpty()
   deviceId: string;
 
