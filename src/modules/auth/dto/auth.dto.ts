@@ -18,9 +18,16 @@ export class SignUpDto {
   @ApiProperty()
   @IsDefined()
   @IsString()
-  @MinLength(6)
+  @MinLength(1)
   @MaxLength(30)
-  name: string;
+  firstname: string;
+
+  @ApiProperty()
+  @IsDefined()
+  @IsString()
+  @MinLength(1)
+  @MaxLength(30)
+  lastname: string;
 
   @ApiProperty()
   @IsDefined()
@@ -45,6 +52,7 @@ export class SignUpDto {
 }
 
 export class SignInDto extends OmitType(SignUpDto, [
-  'name',
+  'firstname',
+  'lastname',
   'gender',
 ] as const) {}

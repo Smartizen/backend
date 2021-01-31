@@ -41,11 +41,16 @@ export class AuthService {
     const foundUser = await this.validateUser(email, password);
     if (!foundUser) throw new UnauthorizedException('Invalid Credentials');
 
-    const token = await this.generateToken({ name: foundUser.name, email });
+    const token = await this.generateToken({
+      firstname: foundUser.firstname,
+      lastname: foundUser.lastname,
+      email,
+    });
 
     return {
       user: {
-        name: foundUser.name,
+        firstname: foundUser.firstname,
+        lastname: foundUser.lastname,
         email,
       },
       token,
@@ -53,27 +58,30 @@ export class AuthService {
   }
 
   public async signUp(signUpDto: SignUpDto): Promise<any> {
-    const { name, email, password, gender } = signUpDto;
+    const { firstname, lastname, email, password, gender } = signUpDto;
     // hash the password
     const hashedPass = await this.hashPassword(password);
 
     // create the user
-    const newUser = await this.userService.create({
-      name,
+    const newUser = await this.userService.create(
+      firstname,
+      lastname,
       email,
-      password: hashedPass,
+      hashedPass, //password
       gender,
-    });
+      2, //role
+    );
 
     // tslint:disable-next-line: no-string-literal
     // const result = newUser['dataValues'];
     // generate token
-    const token = await this.generateToken({ name, email });
+    const token = await this.generateToken({ firstname, lastname, email });
 
     // return the user and the token
     return {
       user: {
-        name,
+        firstname,
+        lastname,
         email,
       },
       token,
