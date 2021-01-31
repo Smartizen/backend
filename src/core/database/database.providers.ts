@@ -7,7 +7,7 @@ import { Manage } from '../../modules/manage/entities/manage.entity';
 import { Own } from '../../modules/own/entities/own.entity';
 import { Farm } from '../../modules/farm/entities/farm.entity';
 // import { Season } from 'src/modules/season/entities/season.entity';
-// import { Crop } from 'src/modules/crop/entities/crop.entity';
+import { Crop } from '../../modules/crop/entities/crop.entity';
 // import { DeviceBelong } from 'src/modules/device-belong/entities/device-belong.entity';
 // import { Device } from 'src/modules/device/entities/device.entity';
 // import { Buy } from 'src/modules/buy/entities/buy.entity';
@@ -37,7 +37,7 @@ export const databaseProviders = [
         Own,
         Farm,
         // Season,
-        // Crop,
+        Crop,
         // DeviceBelong,
         // Device,
         // Buy,

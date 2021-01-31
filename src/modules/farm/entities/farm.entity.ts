@@ -7,9 +7,11 @@ import {
   DataType,
   AllowNull,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
 import { User } from '../../users/user.entity';
 import { Own } from '../../own/entities/own.entity';
+import { Crop } from '../../crop/entities/crop.entity';
 @Table
 export class Farm extends Model<Farm> {
   @PrimaryKey
@@ -31,4 +33,7 @@ export class Farm extends Model<Farm> {
 
   @BelongsToMany(() => User, () => Own)
   owners: User[];
+
+  @HasMany(() => Crop)
+  crops: Crop[];
 }
