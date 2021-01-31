@@ -9,16 +9,19 @@ import {
   UpdatedAt,
   DeletedAt,
   BelongsToMany,
+  AutoIncrement,
 } from 'sequelize-typescript';
 import { Manage } from '../manage/entities/manage.entity';
+import { Farm } from '../farm/entities/farm.entity';
+import { Own } from '../own/entities/own.entity';
 @Table
 export class User extends Model<User> {
+  @AutoIncrement
   @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
+    type: DataType.BIGINT,
     primaryKey: true,
   })
-  id: string;
+  id: number;
 
   @Column({
     type: DataType.STRING,
@@ -89,4 +92,7 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => User, () => Manage)
   staffs: User[];
+
+  @BelongsToMany(() => Farm, () => Own)
+  farms: Farm[];
 }
