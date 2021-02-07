@@ -4,6 +4,7 @@ import {
   ForeignKey,
   Column,
   BelongsTo,
+  DataType,
 } from 'sequelize-typescript';
 import { Crop } from '../../crop/entities/crop.entity';
 import { Device } from '../../device/entities/device.entity';
@@ -11,12 +12,12 @@ import { Device } from '../../device/entities/device.entity';
 @Table
 export class DeviceBelong extends Model<DeviceBelong> {
   @ForeignKey(() => Crop)
-  @Column
-  cropId: number;
+  @Column(DataType.UUID)
+  cropId: string;
 
   @ForeignKey(() => Device)
-  @Column
-  deviceId: number;
+  @Column(DataType.UUID)
+  deviceId: string;
 
   @Column
   password: string;

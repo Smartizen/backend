@@ -13,15 +13,14 @@ import { User } from '../../users/user.entity';
 @Table
 export class Own extends Model<Own> {
   @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT)
-  id: number;
+  @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
+  id: string;
 
   @ForeignKey(() => Farm)
-  @Column
-  farmId: number;
+  @Column(DataType.UUID)
+  farmId: string;
 
   @ForeignKey(() => User)
-  @Column
-  userId: number;
+  @Column(DataType.UUID)
+  userId: string;
 }

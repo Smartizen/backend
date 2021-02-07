@@ -13,12 +13,12 @@ import { Crop } from '../../crop/entities/crop.entity';
 @Table
 export class Season extends Model<Season> {
   @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT)
-  id: number;
+  @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
+  id: string;
 
   @ForeignKey(() => Crop)
-  cropId: number;
+  @Column(DataType.UUID)
+  cropId: string;
 
   @Column(DataType.DATE)
   startTime: Date;

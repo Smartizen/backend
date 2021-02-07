@@ -18,9 +18,8 @@ import { DeviceBelong } from '../../device-belong/entities/device-belong.entity'
 @Table
 export class Device extends Model<Device> {
   @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT)
-  id: number;
+  @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
+  id: string;
 
   @Column
   name: string;

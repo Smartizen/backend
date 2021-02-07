@@ -18,12 +18,12 @@ import { Device } from '../device/entities/device.entity';
 import { Buy } from '../buy/entities/buy.entity';
 @Table
 export class User extends Model<User> {
-  @AutoIncrement
   @Column({
-    type: DataType.BIGINT,
+    defaultValue: DataType.UUIDV4,
+    type: DataType.UUID,
     primaryKey: true,
   })
-  id: number;
+  id: string;
 
   @Column({
     type: DataType.STRING,
@@ -65,8 +65,8 @@ export class User extends Model<User> {
   image: string;
 
   @Column({
-    type: DataType.STRING,
-    allowNull: true,
+    type: DataType.INTEGER,
+    allowNull: false,
   })
   role: number;
 

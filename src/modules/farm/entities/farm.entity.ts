@@ -15,9 +15,8 @@ import { Crop } from '../../crop/entities/crop.entity';
 @Table
 export class Farm extends Model<Farm> {
   @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT)
-  id: number;
+  @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
+  id: string;
 
   @AllowNull
   @Column

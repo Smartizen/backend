@@ -6,6 +6,7 @@ import {
   CreatedAt,
   UpdatedAt,
   DeletedAt,
+  DataType,
 } from 'sequelize-typescript';
 import { Device } from '../../device/entities/device.entity';
 import { User } from '../../users/user.entity';
@@ -13,12 +14,12 @@ import { User } from '../../users/user.entity';
 @Table
 export class Buy extends Model<Buy> {
   @ForeignKey(() => Device)
-  @Column
-  deviceId: number;
+  @Column(DataType.UUID)
+  deviceId: string;
 
   @ForeignKey(() => User)
   @Column
-  userId: number;
+  userId: string;
 
   @Column
   location: string;

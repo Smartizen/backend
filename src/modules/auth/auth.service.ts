@@ -45,6 +45,7 @@ export class AuthService {
       firstname: foundUser.firstname,
       lastname: foundUser.lastname,
       email,
+      role: foundUser.role,
     });
 
     return {
@@ -52,6 +53,7 @@ export class AuthService {
         firstname: foundUser.firstname,
         lastname: foundUser.lastname,
         email,
+        role: foundUser.role,
       },
       token,
     };
@@ -69,7 +71,7 @@ export class AuthService {
       email,
       hashedPass, //password
       gender,
-      2, //role
+      1, //role
     );
 
     // tslint:disable-next-line: no-string-literal

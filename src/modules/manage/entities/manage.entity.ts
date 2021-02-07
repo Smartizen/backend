@@ -15,9 +15,8 @@ import { User } from '../../users/user.entity';
 @Table
 export class Manage extends Model<Manage> {
   @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT)
-  id: number;
+  @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
+  id: string;
 
   @ForeignKey(() => User)
   @Column({
