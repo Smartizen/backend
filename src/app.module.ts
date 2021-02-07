@@ -12,6 +12,7 @@ import { CropModule } from './modules/crop/crop.module';
 import { DeviceModule } from './modules/device/device.module';
 import { DeviceBelongModule } from './modules/device-belong/device-belong.module';
 import { BuyModule } from './modules/buy/buy.module';
+import { DeviceTypeModule } from './modules/device-type/device-type.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { BuyModule } from './modules/buy/buy.module';
     DeviceModule,
     DeviceBelongModule,
     BuyModule,
+    DeviceTypeModule,
   ],
   controllers: [],
   providers: [],

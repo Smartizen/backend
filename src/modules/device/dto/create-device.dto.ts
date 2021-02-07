@@ -4,14 +4,18 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateDeviceDto {
   @ApiProperty()
   @IsNotEmpty()
-  name: string;
+  typeId: string;
 
   @ApiProperty()
-  desciption: string;
+  @IsNotEmpty()
+  deviceId: string;
+
+  @ApiProperty()
+  description: string;
 
   @ApiProperty()
   @IsInt()
-  prime: number;
+  price: number;
 
   @ApiProperty()
   @IsInt()

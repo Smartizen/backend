@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpService } from '@nestjs/common';
 import { CreateDeviceDto } from './dto/create-device.dto';
 import { UpdateDeviceDto } from './dto/update-device.dto';
 import { Device } from './entities/device.entity';
@@ -8,10 +8,32 @@ export class DeviceService {
   constructor(
     @Inject('DeviceRepository')
     private readonly deviceRepository: typeof Device,
+    private http: HttpService,
   ) {}
 
-  create(createDeviceDto: CreateDeviceDto) {
-    return 'This action adds a new device';
+  async create(createDeviceDto: CreateDeviceDto) {
+    let res = await this.http
+      .post(
+        process.env.SENSOR_BACKEND_URL + '/admin/registerDevice',
+        createDeviceDto,
+      )
+      .toPromise();
+
+    let { typeId, deviceId, authToken } = res.data;
+    let { price, discount } = createDeviceDto;
+    if (res.data.status === 200) {
+      const deviceType = new Device({
+        typeId,
+        deviceId,
+        authToken,
+        description: createDeviceDto.description,
+        price,
+        discount,
+      });
+      deviceType.save();
+    }
+
+    return res.data;
   }
 
   findAll() {
@@ -26,7 +48,20 @@ export class DeviceService {
     return `This action updates a #${id} device`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} device`;
+  async remove(typeId: string, deviceId: string) {
+    try {
+      let res = await this.http
+        .post(process.env.SENSOR_BACKEND_URL + '/admin/unRegisterDevice', {
+          typeId,
+          deviceId,
+        })
+        .toPromise();
+
+      this.deviceRepository.destroy({ where: { deviceId } });
+
+      return res.data;
+    } catch (error) {
+      return error;
+    }
   }
 }

@@ -2,18 +2,20 @@ import {
   Table,
   Model,
   PrimaryKey,
-  AutoIncrement,
+  ForeignKey,
   Column,
   DataType,
   CreatedAt,
   UpdatedAt,
   DeletedAt,
   BelongsToMany,
+  BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
 import { User } from '../../users/user.entity';
 import { Buy } from '../../buy/entities/buy.entity';
 import { DeviceBelong } from '../../device-belong/entities/device-belong.entity';
+import { DeviceType } from '../../device-type/entities/device-type.entity';
 
 @Table
 export class Device extends Model<Device> {
@@ -21,8 +23,21 @@ export class Device extends Model<Device> {
   @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
   id: string;
 
+  @ForeignKey(() => DeviceType)
   @Column
-  name: string;
+  typeId: string;
+
+  @BelongsTo(() => DeviceType)
+  deviceType: DeviceType;
+
+  @Column({ allowNull: false })
+  deviceId: string;
+
+  @HasMany(() => DeviceBelong)
+  deviceBelong: DeviceBelong[];
+
+  @Column
+  authToken: string;
 
   @Column
   description: string;
@@ -44,7 +59,4 @@ export class Device extends Model<Device> {
   @DeletedAt
   @Column({ field: 'deleted_at' })
   deletedAt: Date;
-
-  @HasMany(() => DeviceBelong)
-  deviceBelong: DeviceBelong[];
 }

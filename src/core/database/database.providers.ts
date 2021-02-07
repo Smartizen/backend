@@ -10,6 +10,7 @@ import { Season } from '../../modules/season/entities/season.entity';
 import { Crop } from '../../modules/crop/entities/crop.entity';
 import { DeviceBelong } from '../../modules/device-belong/entities/device-belong.entity';
 import { Device } from '../../modules/device/entities/device.entity';
+import { DeviceType } from '../../modules/device-type/entities/device-type.entity';
 import { Buy } from '../../modules/buy/entities/buy.entity';
 
 export const databaseProviders = [
@@ -40,6 +41,7 @@ export const databaseProviders = [
         Crop,
         DeviceBelong,
         Device,
+        DeviceType,
         Buy,
       ]);
       await sequelize.sync();
