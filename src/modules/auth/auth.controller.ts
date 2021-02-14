@@ -23,7 +23,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get()
   auth(@Request() req) {
-    return req.user;
+    return { user: req.user };
   }
 
   @ApiOperation({ summary: 'Sign Up' })

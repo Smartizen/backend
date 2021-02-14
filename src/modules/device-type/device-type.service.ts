@@ -29,8 +29,8 @@ export class DeviceTypeService {
     return res.data;
   }
 
-  findAll() {
-    return `This action returns all deviceType`;
+  async findAll() {
+    return this.deviceTypeRepository.findAll();
   }
 
   findOne(id: number) {

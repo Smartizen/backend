@@ -13,6 +13,7 @@ import { DeviceModule } from './modules/device/device.module';
 import { DeviceBelongModule } from './modules/device-belong/device-belong.module';
 import { BuyModule } from './modules/buy/buy.module';
 import { DeviceTypeModule } from './modules/device-type/device-type.module';
+import { CommandModule } from './modules/command/command.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { DeviceTypeModule } from './modules/device-type/device-type.module';
     DeviceBelongModule,
     BuyModule,
     DeviceTypeModule,
+    CommandModule,
   ],
   controllers: [],
   providers: [],

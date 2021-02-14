@@ -6,8 +6,10 @@ import {
   DataType,
   BelongsTo,
   ForeignKey,
-  AutoIncrement,
   HasMany,
+  CreatedAt,
+  UpdatedAt,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { Farm } from '../../farm/entities/farm.entity';
 import { Season } from '../../season/entities/season.entity';
@@ -34,4 +36,16 @@ export class Crop extends Model<Crop> {
 
   @HasMany(() => DeviceBelong)
   devides: DeviceBelong[];
+
+  @CreatedAt
+  @Column({ field: 'created_at' })
+  createdAt: Date;
+
+  @UpdatedAt
+  @Column({ field: 'updated_at' })
+  updatedAt: Date;
+
+  @DeletedAt
+  @Column({ field: 'deleted_at' })
+  deletedAt: Date;
 }

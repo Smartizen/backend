@@ -4,34 +4,32 @@ import {
   PrimaryKey,
   Column,
   DataType,
+  BelongsTo,
+  ForeignKey,
   CreatedAt,
   UpdatedAt,
   DeletedAt,
-  HasMany,
-  Unique,
 } from 'sequelize-typescript';
-
-import { Device } from '../../device/entities/device.entity';
-import { Command } from '../../command/entities/command.entity';
+import { DeviceType } from '../../device-type/entities/device-type.entity';
 
 @Table
-export class DeviceType extends Model<DeviceType> {
+export class Command extends Model<Command> {
+  @PrimaryKey
   @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
   id: string;
 
-  @Unique
-  @PrimaryKey
   @Column({ allowNull: false })
-  typeId: string;
-
-  @HasMany(() => Device)
-  devices: Device[];
-
-  @HasMany(() => Command)
-  commands: Command[];
+  command: string;
 
   @Column
-  description: string;
+  decription: string;
+
+  @ForeignKey(() => DeviceType)
+  @Column
+  deviceTypeId: string;
+
+  @BelongsTo(() => DeviceType)
+  deviceType: DeviceType;
 
   @CreatedAt
   @Column({ field: 'created_at' })

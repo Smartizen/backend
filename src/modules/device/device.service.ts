@@ -37,7 +37,7 @@ export class DeviceService {
   }
 
   findAll() {
-    return `This action returns all device`;
+    return this.deviceRepository.findAll();
   }
 
   findOne(id: number) {
@@ -58,7 +58,6 @@ export class DeviceService {
         .toPromise();
 
       this.deviceRepository.destroy({ where: { deviceId } });
-
       return res.data;
     } catch (error) {
       return error;
