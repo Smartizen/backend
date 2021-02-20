@@ -6,30 +6,45 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { FarmService } from './farm.service';
 import { CreateFarmDto } from './dto/create-farm.dto';
 import { UpdateFarmDto } from './dto/update-farm.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { User } from '../users/user.entity';
+import { GetUser } from '../../core/decorators/getUser.decorator';
+import { JwtAuthGuard } from '../../core/guards/jwt.guard';
 
 @ApiTags('Farm')
 @Controller('farm')
 export class FarmController {
   constructor(private readonly farmService: FarmService) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createFarmDto: CreateFarmDto) {
-    return this.farmService.create(createFarmDto);
+  create(@Body() createFarmDto: CreateFarmDto, @GetUser() user: User) {
+    return this.farmService.create(createFarmDto, user.id);
   }
+
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @Get('allMember')
+  // findAllMembers(@GetUser() user: User) {
+  //   return this.farmService.findAllMembers();
+  // }
 
   @Get()
   findAll() {
     return this.farmService.findAll();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.farmService.findOne(+id);
+    return this.farmService.findOne(id);
   }
 
   @Put(':id')
