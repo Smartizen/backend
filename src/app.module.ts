@@ -5,7 +5,6 @@ import { DatabaseModule } from './core/database/database.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ManageModule } from './modules/manage/manage.module';
-import { OwnModule } from './modules/own/own.module';
 import { FarmModule } from './modules/farm/farm.module';
 import { SeasonModule } from './modules/season/season.module';
 import { CropModule } from './modules/crop/crop.module';
@@ -22,7 +21,6 @@ import { CommandModule } from './modules/command/command.module';
     UsersModule,
     AuthModule,
     ManageModule,
-    OwnModule,
     FarmModule,
     SeasonModule,
     CropModule,

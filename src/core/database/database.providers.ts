@@ -4,7 +4,6 @@ import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 import { databaseConfig } from './database.config';
 import { User } from '../../modules/users/user.entity';
 import { Manage } from '../../modules/manage/entities/manage.entity';
-import { Own } from '../../modules/own/entities/own.entity';
 import { Farm } from '../../modules/farm/entities/farm.entity';
 import { Season } from '../../modules/season/entities/season.entity';
 import { Crop } from '../../modules/crop/entities/crop.entity';
@@ -36,7 +35,6 @@ export const databaseProviders = [
       sequelize.addModels([
         User,
         Manage,
-        Own,
         Farm,
         Season,
         Crop,
