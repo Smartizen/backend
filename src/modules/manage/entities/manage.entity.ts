@@ -1,7 +1,6 @@
 import {
   Table,
   PrimaryKey,
-  AutoIncrement,
   Column,
   DataType,
   ForeignKey,
@@ -9,8 +8,10 @@ import {
   CreatedAt,
   DeletedAt,
   Model,
+  AllowNull,
 } from 'sequelize-typescript';
 import { User } from '../../users/user.entity';
+import { Farm } from '../../farm/entities/farm.entity';
 
 @Table
 export class Manage extends Model<Manage> {
@@ -22,13 +23,15 @@ export class Manage extends Model<Manage> {
   @Column({
     type: DataType.UUID,
   })
-  masterId: string;
+  userId: string;
 
-  @ForeignKey(() => User)
-  @Column({
-    type: DataType.UUID,
-  })
-  staffId: string;
+  @ForeignKey(() => Farm)
+  @Column(DataType.UUID)
+  farmId: string;
+
+  @AllowNull(false)
+  @Column
+  role: number;
 
   @CreatedAt
   @Column({ field: 'created_at' })

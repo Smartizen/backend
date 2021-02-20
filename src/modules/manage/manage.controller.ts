@@ -6,20 +6,34 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ManageService } from './manage.service';
-import { CreateManageDto } from './dto/create-manage.dto';
 import { UpdateManageDto } from './dto/update-manage.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { SignUpDto } from '../auth/dto/auth.dto';
+import { JwtAuthGuard } from '../../core/guards/jwt.guard';
+import { GetUser } from '../../core/decorators/getUser.decorator';
+import { User } from '../users/user.entity';
 
 @ApiTags('Manage')
 @Controller('manage')
 export class ManageController {
   constructor(private readonly manageService: ManageService) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createManageDto: CreateManageDto) {
-    return this.manageService.create(createManageDto);
+  create(@Body() signUpDto: SignUpDto, @GetUser() user: User) {
+    return this.manageService.create(signUpDto, user.id);
+  }
+
+  @ApiOperation({ summary: 'Get All Staff' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('allStaff')
+  getAllStaff(@GetUser() user: User) {
+    return this.manageService.getAllStaff(user.id);
   }
 
   @Get()

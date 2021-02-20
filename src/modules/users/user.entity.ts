@@ -9,13 +9,11 @@ import {
   UpdatedAt,
   DeletedAt,
   BelongsToMany,
-  AutoIncrement,
 } from 'sequelize-typescript';
-import { Manage } from '../manage/entities/manage.entity';
 import { Farm } from '../farm/entities/farm.entity';
-import { Own } from '../own/entities/own.entity';
 import { Device } from '../device/entities/device.entity';
 import { Buy } from '../buy/entities/buy.entity';
+import { Manage } from '../manage/entities/manage.entity';
 @Table
 export class User extends Model<User> {
   @Column({
@@ -77,6 +75,12 @@ export class User extends Model<User> {
   })
   gender: string;
 
+  @BelongsToMany(() => Farm, () => Manage)
+  farms: Farm[];
+
+  @BelongsToMany(() => Device, () => Buy)
+  devices: Device[];
+
   @CreatedAt
   @Column({ field: 'created_at' })
   createdAt: Date;
@@ -88,16 +92,4 @@ export class User extends Model<User> {
   @DeletedAt
   @Column({ field: 'deleted_at' })
   deletedAt: Date;
-
-  @BelongsToMany(() => User, () => Manage)
-  masters: User[];
-
-  @BelongsToMany(() => User, () => Manage)
-  staffs: User[];
-
-  @BelongsToMany(() => Farm, () => Own)
-  farms: Farm[];
-
-  @BelongsToMany(() => Device, () => Buy)
-  devices: Device[];
 }
