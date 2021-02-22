@@ -1,14 +1,12 @@
-import {
-  IsNotEmpty,
-  MinLength,
-  IsString,
-  MaxLength,
-  Allow,
-  IsOptional,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCommandDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  deviceTypeId: string;
+
   @ApiProperty()
   @IsString()
   @IsNotEmpty()

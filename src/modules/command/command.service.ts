@@ -10,12 +10,13 @@ export class CommandService {
     private readonly commandRepository: typeof Command,
   ) {}
 
-  create(createCommandDto: CreateCommandDto) {
-    return 'This action adds a new command';
+  async create(createCommandDto: CreateCommandDto) {
+    const command = new Command(createCommandDto);
+    return await command.save();
   }
 
-  findAll() {
-    return `This action returns all command`;
+  async findAll() {
+    return await this.commandRepository.findAll();
   }
 
   findOne(id: number) {

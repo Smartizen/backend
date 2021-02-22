@@ -22,13 +22,13 @@ export class Command extends Model<Command> {
   command: string;
 
   @Column
-  decription: string;
+  description: string;
 
   @ForeignKey(() => DeviceType)
   @Column
   deviceTypeId: string;
 
-  @BelongsTo(() => DeviceType)
+  @BelongsTo(() => DeviceType, 'typeId')
   deviceType: DeviceType;
 
   @CreatedAt
