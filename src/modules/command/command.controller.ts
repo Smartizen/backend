@@ -52,6 +52,6 @@ export class CommandController {
   @UseGuards(JwtAuthGuard, IsAdmin)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.commandService.remove(+id);
+    return this.commandService.remove(id);
   }
 }

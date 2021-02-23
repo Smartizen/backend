@@ -45,7 +45,9 @@ export class DeviceTypeService {
       attributes: ['typeId'],
       where: { typeId },
 
-      include: [{ model: Command, attributes: ['command', 'description'] }],
+      include: [
+        { model: Command, attributes: ['id', 'command', 'description'] },
+      ],
     });
     return device;
   }

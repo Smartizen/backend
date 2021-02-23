@@ -11,8 +11,13 @@ export class CommandService {
   ) {}
 
   async create(createCommandDto: CreateCommandDto) {
-    const command = new Command(createCommandDto);
-    return await command.save();
+    try {
+      const command = new Command(createCommandDto);
+      await command.save();
+      return { status: 200, message: 'Add command successfully' };
+    } catch (error) {
+      return { status: 400, error };
+    }
   }
 
   async findAll() {
@@ -27,7 +32,12 @@ export class CommandService {
     return `This action updates a #${id} command`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} command`;
+  remove(id: string) {
+    try {
+      this.commandRepository.destroy({ where: { id } });
+      return { status: 200, message: 'Delete sucessfully' };
+    } catch (error) {
+      return { status: 400, message: error };
+    }
   }
 }
