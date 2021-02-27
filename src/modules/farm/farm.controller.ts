@@ -28,16 +28,16 @@ export class FarmController {
     return this.farmService.create(createFarmDto, user.id);
   }
 
-  // @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
-  // @Get('allMember')
-  // findAllMembers(@GetUser() user: User) {
-  //   return this.farmService.findAllMembers();
-  // }
-
   @Get()
   findAll() {
     return this.farmService.findAll();
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('myFarm')
+  findAllMyFarm(@GetUser() user: User) {
+    return this.farmService.findAllMyFarm(user.id);
   }
 
   @ApiBearerAuth()

@@ -2,6 +2,8 @@ import { Injectable, Inject } from '@nestjs/common';
 
 import { User } from './user.entity';
 import { USER_REPOSITORY } from '../../core/constants';
+import { Farm } from '../farm/entities/farm.entity';
+import { Crop } from '../crop/entities/crop.entity';
 
 @Injectable()
 export class UsersService {
@@ -36,5 +38,62 @@ export class UsersService {
 
   async findOneById(id: number): Promise<User> {
     return await this.userRepository.findOne<User>({ where: { id } });
+  }
+
+  async isOwnFarm(farmId: string, userId: string) {
+    try {
+      let ishave = this.userRepository.findOne({
+        where: { id: userId },
+        include: [
+          {
+            model: Farm,
+            where: { id: farmId },
+          },
+        ],
+      });
+      return ishave;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async myFarm(userId: string) {
+    try {
+      let ishave = this.userRepository.findOne({
+        where: { id: userId },
+        attributes: [],
+        include: [
+          {
+            model: Farm,
+            attributes: ['id', 'name', 'image', 'location'],
+            through: { attributes: [] },
+          },
+        ],
+      });
+      return ishave;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async myCropByFarm(userId: string, farmId: string) {
+    try {
+      let ishave = this.userRepository.findOne({
+        where: { id: userId },
+        attributes: [],
+        include: [
+          {
+            model: Farm,
+            where: { id: farmId },
+            attributes: ['id', 'name', 'image', 'location'],
+            through: { attributes: [] },
+            include: [{ model: Crop, attributes: ['id', 'name'] }],
+          },
+        ],
+      });
+      return ishave;
+    } catch (error) {
+      return error;
+    }
   }
 }

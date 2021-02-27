@@ -4,10 +4,13 @@ import { UpdateFarmDto } from './dto/update-farm.dto';
 import { Farm } from './entities/farm.entity';
 import { Manage } from '../manage/entities/manage.entity';
 import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class FarmService {
   constructor(
+    private readonly userService: UsersService,
+
     @Inject('FarmRepository')
     private readonly farmRepository: typeof Farm,
   ) {}
@@ -31,16 +34,12 @@ export class FarmService {
     }
   }
 
-  // async findAllMembers(){
-  //   const staff = await this.userRepository.findAll({
-  //     where: {  },
-  //     include: [User],
-  //   });
-  //   return staff;
-  // }
-
   findAll() {
     return `This action returns all farm`;
+  }
+
+  async findAllMyFarm(userId: string) {
+    return await this.userService.myFarm(userId);
   }
 
   async findOne(id: string) {
