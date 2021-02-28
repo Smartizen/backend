@@ -27,6 +27,12 @@ export class FarmService {
       await mange.save();
       return {
         status: 200,
+        data: {
+          id: farm.id,
+          name: farm.name,
+          image: farm.image,
+          location: farm.location,
+        },
         message: 'Create Successfully',
       };
     } catch (error) {

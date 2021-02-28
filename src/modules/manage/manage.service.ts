@@ -15,37 +15,44 @@ export class ManageService {
     private readonly manageRepository: typeof Manage,
   ) {}
 
-  async create(signUpDto: SignUpDto, masterId: string) {
+  async create(signUpDto: SignUpDto, userId: string, farmId: string) {
     const { firstname, lastname, email, password, gender } = signUpDto;
-    // hash the password
-    const hashedPass = await bcrypt.hashSync(password, 10);
-    try {
-      // create the user
-      const newUser = await this.userService.create(
-        firstname,
-        lastname,
-        email,
-        hashedPass, //password
-        gender,
-        1, //role
-      );
-      const manage = new Manage({
-        masterId,
-        staffId: newUser.id,
-      });
-      manage.save();
-      return { status: 200, message: 'Create succesfully' };
-    } catch (error) {
-      return { status: 400, error };
+
+    if (this.isAdminOfFarm(userId, farmId)) {
+      // hash the password
+      const hashedPass = await bcrypt.hashSync(password, 10);
+      try {
+        // create the user
+        const newUser = await this.userService.create(
+          firstname,
+          lastname,
+          email,
+          hashedPass, //password
+          gender,
+          1, //role
+        );
+        const manage = new Manage({
+          userId: newUser.id,
+          farmId,
+          role: 1,
+        });
+        manage.save();
+        return { status: 200, message: 'Create succesfully' };
+      } catch (error) {
+        return { status: 400, error };
+      }
+    } else {
+      return { status: 400, message: "You can't add user" };
     }
   }
 
-  async getAllStaff(masterId: string) {
-    const staff = await this.manageRepository.findAll({
-      where: { masterId },
-      include: [User],
-    });
-    return staff;
+  async getAllStaff(userId: string, farmId: string) {
+    if (this.isMemberOfFarm(userId, farmId)) {
+      const staff = await this.userService.getAllMemberOfFarm(farmId);
+      return staff;
+    } else {
+      return { status: 400, message: "You're not member of this farm" };
+    }
   }
 
   async findAll() {
@@ -63,5 +70,24 @@ export class ManageService {
 
   remove(id: number) {
     return `This action removes a #${id} manage`;
+  }
+
+  async isAdminOfFarm(userId: string, farmId: string) {
+    let isAdmin = await this.manageRepository.findOne({
+      attributes: ['role'],
+      where: { userId, farmId },
+    });
+
+    if (isAdmin.role === 0) return true;
+    else return false;
+  }
+
+  async isMemberOfFarm(userId: string, farmId: string) {
+    let isMember = await this.manageRepository.findOne({
+      attributes: ['role'],
+      where: { userId, farmId },
+    });
+
+    return !!isMember;
   }
 }

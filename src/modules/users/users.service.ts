@@ -96,4 +96,31 @@ export class UsersService {
       return error;
     }
   }
+
+  async getAllMemberOfFarm(farmId: string) {
+    try {
+      let member = this.userRepository.findAll({
+        where: {},
+        attributes: [
+          'id',
+          'firstname',
+          'lastname',
+          'email',
+          'image',
+          'phonenumber',
+          'gender',
+        ],
+        include: [
+          {
+            model: Farm,
+            where: { id: farmId },
+            attributes: [],
+          },
+        ],
+      });
+      return member;
+    } catch (error) {
+      return error;
+    }
+  }
 }

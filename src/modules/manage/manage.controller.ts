@@ -23,17 +23,21 @@ export class ManageController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() signUpDto: SignUpDto, @GetUser() user: User) {
-    return this.manageService.create(signUpDto, user.id);
+  @Post(':farmId')
+  create(
+    @Body() signUpDto: SignUpDto,
+    @Param('farmId') farmId: string,
+    @GetUser() user: User,
+  ) {
+    return this.manageService.create(signUpDto, user.id, farmId);
   }
 
-  @ApiOperation({ summary: 'Get All Staff' })
+  @ApiOperation({ summary: 'Get All Staff In My Farm' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get('allStaff')
-  getAllStaff(@GetUser() user: User) {
-    return this.manageService.getAllStaff(user.id);
+  @Get(':farmId')
+  getAllStaff(@Param('farmId') farmId: string, @GetUser() user: User) {
+    return this.manageService.getAllStaff(user.id, farmId);
   }
 
   @Get()

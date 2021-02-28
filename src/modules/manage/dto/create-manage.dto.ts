@@ -4,9 +4,9 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateManageDto {
   @ApiProperty()
   @IsString()
-  masterId: string; // UserId
+  userId: string; // UserId
 
   @ApiProperty()
   @IsString()
-  staffId: string; //UserId
+  farmId: string; // FarmId
 }
