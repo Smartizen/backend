@@ -24,6 +24,9 @@ export class Crop extends Model<Crop> {
   @Column
   name: string;
 
+  @Column
+  image: string;
+
   @ForeignKey(() => Farm)
   @Column(DataType.UUID)
   farmId: string;

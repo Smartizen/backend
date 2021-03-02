@@ -3,6 +3,8 @@ import { CreateCropDto } from './dto/create-crop.dto';
 import { UpdateCropDto } from './dto/update-crop.dto';
 import { Crop } from './entities/crop.entity';
 import { UsersService } from '../users/users.service';
+import { Farm } from '../farm/entities/farm.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class CropService {
@@ -43,5 +45,20 @@ export class CropService {
 
   remove(id: number) {
     return `This action removes a #${id} crop`;
+  }
+
+  async isUserOwnCrop(cropId: string, userId) {
+    let isOwnCrop = await this.cropRepository.findOne({
+      where: { id: cropId },
+      attributes: [],
+      include: [
+        {
+          model: Farm,
+          include: [{ model: User, where: { id: userId } }],
+        },
+      ],
+    });
+
+    return !!isOwnCrop.farm;
   }
 }

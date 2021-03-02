@@ -9,5 +9,6 @@ import { UsersModule } from '../users/users.module';
   imports: [DatabaseModule, UsersModule],
   controllers: [CropController],
   providers: [CropService, ...cropProviders],
+  exports: [CropService],
 })
 export class CropModule {}

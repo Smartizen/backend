@@ -1,4 +1,10 @@
-import { IsNotEmpty, MinLength, IsString, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  MinLength,
+  IsString,
+  MaxLength,
+  IsUrl,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCropDto {
@@ -12,4 +18,8 @@ export class CreateCropDto {
   @MinLength(1)
   @MaxLength(30)
   name: string;
+
+  @ApiProperty()
+  @IsUrl()
+  image: string;
 }
