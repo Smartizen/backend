@@ -2,20 +2,46 @@ import { Injectable, Inject } from '@nestjs/common';
 import { CreateDeviceBelongDto } from './dto/create-device-belong.dto';
 import { UpdateDeviceBelongDto } from './dto/update-device-belong.dto';
 import { DeviceBelong } from './entities/device-belong.entity';
+import { CropService } from '../crop/crop.service';
+import { Device } from '../device/entities/device.entity';
 
 @Injectable()
 export class DeviceBelongService {
   constructor(
+    private readonly cropService: CropService,
+
     @Inject('DeviceBelongRepository')
     private readonly deviceBelongRepository: typeof DeviceBelong,
   ) {}
 
-  create(createDeviceBelongDto: CreateDeviceBelongDto) {
-    return 'This action adds a new deviceBelong';
+  async create(createDeviceBelongDto: CreateDeviceBelongDto, userId: string) {
+    let { cropId, deviceId } = createDeviceBelongDto;
+    if (this.cropService.isUserOwnCrop(cropId, userId)) {
+      let belong = new DeviceBelong({ cropId, deviceId });
+      let NewBelong = await belong.save();
+
+      return { status: 200, data: NewBelong };
+    } else {
+      return { status: 401, message: "You don't have right to add device" };
+    }
   }
 
-  findAll() {
-    return `This action returns all deviceBelong`;
+  async findAllDeviceInCrop(cropId: string, userId: string) {
+    if (this.cropService.isUserOwnCrop(cropId, userId)) {
+      let data = await this.deviceBelongRepository.findAll({
+        where: { cropId },
+        attributes: [],
+        include: [
+          {
+            model: Device,
+            attributes: ['typeId', 'deviceId'],
+          },
+        ],
+      });
+      return { status: 200, data };
+    } else {
+      return { status: 401, message: "You don't have right to add device" };
+    }
   }
 
   findOne(id: number) {

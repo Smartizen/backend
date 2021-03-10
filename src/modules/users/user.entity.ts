@@ -63,6 +63,12 @@ export class User extends Model<User> {
   image: string;
 
   @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  born: Date;
+
+  @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })

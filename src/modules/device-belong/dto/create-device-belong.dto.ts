@@ -11,14 +11,4 @@ export class CreateDeviceBelongDto {
   @IsNotEmpty()
   @IsUUID()
   deviceId: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  password: string;
 }

@@ -6,25 +6,36 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { DeviceBelongService } from './device-belong.service';
 import { CreateDeviceBelongDto } from './dto/create-device-belong.dto';
 import { UpdateDeviceBelongDto } from './dto/update-device-belong.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../core/guards/jwt.guard';
+import { User } from '../users/user.entity';
+import { GetUser } from '../../core/decorators/getUser.decorator';
 
 @ApiTags('Device  Belong')
 @Controller('device-belong')
 export class DeviceBelongController {
   constructor(private readonly deviceBelongService: DeviceBelongService) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createDeviceBelongDto: CreateDeviceBelongDto) {
-    return this.deviceBelongService.create(createDeviceBelongDto);
+  create(
+    @Body() createDeviceBelongDto: CreateDeviceBelongDto,
+    @GetUser() user: User,
+  ) {
+    return this.deviceBelongService.create(createDeviceBelongDto, user.id);
   }
 
-  @Get()
-  findAll() {
-    return this.deviceBelongService.findAll();
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get(':cropId')
+  findAll(@Param('cropId') cropId: string, @GetUser() user: User) {
+    return this.deviceBelongService.findAllDeviceInCrop(cropId, user.id);
   }
 
   @Get(':id')

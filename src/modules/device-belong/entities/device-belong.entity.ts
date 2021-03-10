@@ -19,9 +19,6 @@ export class DeviceBelong extends Model<DeviceBelong> {
   @Column(DataType.UUID)
   deviceId: string;
 
-  @Column
-  password: string;
-
   @BelongsTo(() => Device)
   device: Device;
 

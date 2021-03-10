@@ -37,7 +37,13 @@ export class ManageService {
           role: 1,
         });
         manage.save();
-        return { status: 200, message: 'Create succesfully' };
+        let payload = {
+          id: newUser.id,
+          firstname: newUser.firstname,
+          lastname: newUser.lastname,
+          email: newUser.email,
+        };
+        return { status: 200, message: 'Create succesfully', data: payload };
       } catch (error) {
         return { status: 400, error };
       }
