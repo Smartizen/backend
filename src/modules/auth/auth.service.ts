@@ -50,6 +50,7 @@ export class AuthService {
     });
 
     return {
+      status: 200,
       user: {
         firstname: foundUser.firstname,
         lastname: foundUser.lastname,
@@ -82,6 +83,7 @@ export class AuthService {
 
     // return the user and the token
     return {
+      status: 200,
       user: {
         firstname,
         lastname,

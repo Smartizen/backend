@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-// import { CreateManageDto } from './dto/create-manage.dto';
+import { CreateManageDto } from './dto/create-manage.dto';
 import { UpdateManageDto } from './dto/update-manage.dto';
 import { Manage } from './entities/manage.entity';
 import { SignUpDto } from '../auth/dto/auth.dto';
@@ -47,6 +47,28 @@ export class ManageService {
       } catch (error) {
         return { status: 400, error };
       }
+    } else {
+      return { status: 400, message: "You can't add user" };
+    }
+  }
+
+  async addByEmail(createManageDto: CreateManageDto, userId: string) {
+    let { farmId, email } = createManageDto;
+    if (this.isAdminOfFarm(userId, farmId)) {
+      let user = await this.userService.findOneByEmail(email);
+      const manage = new Manage({
+        userId: user.id,
+        farmId,
+        role: 1,
+      });
+      manage.save();
+      let payload = {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+      };
+      return { status: 200, message: 'Add user successfully', data: payload };
     } else {
       return { status: 400, message: "You can't add user" };
     }

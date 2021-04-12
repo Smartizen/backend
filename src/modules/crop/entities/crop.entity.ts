@@ -38,7 +38,7 @@ export class Crop extends Model<Crop> {
   seasons: Season[];
 
   @HasMany(() => DeviceBelong)
-  devides: DeviceBelong[];
+  devices: DeviceBelong[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

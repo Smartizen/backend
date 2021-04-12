@@ -12,6 +12,7 @@ export class ValidateInputPipe extends ValidationPipe {
     try {
       return await super.transform(value, metadata);
     } catch (e) {
+      console.log(e);
       if (e instanceof BadRequestException) {
         throw new UnprocessableEntityException(this.handleError(e.message));
       }

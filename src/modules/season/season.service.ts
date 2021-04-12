@@ -1,8 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpService } from '@nestjs/common';
 import { CreateSeasonDto } from './dto/create-season.dto';
 import { UpdateSeasonDto } from './dto/update-season.dto';
+import { GetSeasonDataDto } from './dto/get-season-data.dto';
 import { Season } from './entities/season.entity';
 import { CropService } from '../crop/crop.service';
+import { DeviceBelongService } from '../device-belong/device-belong.service';
 
 @Injectable()
 export class SeasonService {
@@ -11,6 +13,8 @@ export class SeasonService {
     private readonly seasonRepository: typeof Season,
 
     private readonly cropService: CropService,
+    private readonly deviceBelongService: DeviceBelongService,
+    private http: HttpService,
   ) {}
 
   async create(createSeasonDto: CreateSeasonDto, userId: string) {
@@ -28,12 +32,8 @@ export class SeasonService {
     }
   }
 
-  async close(
-    createSeasonDto: CreateSeasonDto,
-    userId: string,
-    seasonId: string,
-  ) {
-    let { cropId } = createSeasonDto;
+  async close(getSeasonDataDto: GetSeasonDataDto, userId: string) {
+    let { cropId, seasonId } = getSeasonDataDto;
     if (await this.cropService.isUserOwnCrop(cropId, userId)) {
       await this.seasonRepository.update(
         { endTime: new Date() },
@@ -49,6 +49,35 @@ export class SeasonService {
     if (await this.cropService.isUserOwnCrop(cropId, userId)) {
       let res = await this.seasonRepository.findAll({ where: { cropId } });
       return { status: 200, data: res };
+    } else {
+      return { status: 401, message: "You don't have rights to create season" };
+    }
+  }
+
+  async GetDataOfSeason(getSeasonDataDto: GetSeasonDataDto, userId: string) {
+    let { cropId, seasonId } = getSeasonDataDto;
+    if (await this.cropService.isUserOwnCrop(cropId, userId)) {
+      // get time
+      let time = await this.seasonRepository.findOne({
+        where: { id: seasonId },
+        attributes: ['startTime', 'endTime'],
+      });
+
+      // get device
+      let devices = await this.deviceBelongService.findAllDeviceInCrop(
+        cropId,
+        userId,
+      );
+      let deviceId = devices.data.map(data => data.device.deviceId);
+      let cropData = await this.http
+        .post(process.env.SENSOR_BACKEND_URL + '/data/hour', {
+          deviceId,
+          from: time.startTime.getTime(),
+          to: time.endTime ? time.endTime.getTime() : new Date().getTime(),
+        })
+        .toPromise();
+
+      return { status: 200, data: cropData.data };
     } else {
       return { status: 401, message: "You don't have rights to create season" };
     }

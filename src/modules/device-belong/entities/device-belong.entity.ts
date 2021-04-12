@@ -16,10 +16,10 @@ export class DeviceBelong extends Model<DeviceBelong> {
   cropId: string;
 
   @ForeignKey(() => Device)
-  @Column(DataType.UUID)
+  @Column
   deviceId: string;
 
-  @BelongsTo(() => Device)
+  @BelongsTo(() => Device, 'deviceId')
   device: Device;
 
   @BelongsTo(() => Crop)

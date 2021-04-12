@@ -5,6 +5,10 @@ import { Farm } from './entities/farm.entity';
 import { Manage } from '../manage/entities/manage.entity';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
+import { Crop } from '../crop/entities/crop.entity';
+import { DeviceBelong } from '../device-belong/entities/device-belong.entity';
+import { Sequelize } from 'sequelize';
+import sequelize = require('sequelize');
 
 @Injectable()
 export class FarmService {
@@ -49,14 +53,23 @@ export class FarmService {
   }
 
   async findOne(id: string) {
-    const farm = await this.farmRepository.findAll({
-      attributes: ['name'],
+    const farm = await this.farmRepository.findOne({
+      attributes: ['id', 'name', 'image', 'location'],
       where: { id },
       include: [
         {
           model: User,
           attributes: ['firstname', 'lastname'],
           through: { attributes: ['role'] },
+        },
+        {
+          model: Crop,
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: DeviceBelong,
+            },
+          ],
         },
       ],
     });

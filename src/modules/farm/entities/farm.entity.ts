@@ -36,7 +36,7 @@ export class Farm extends Model<Farm> {
   members: User[];
 
   @HasMany(() => Crop)
-  crops: Crop[];
+  rooms: Crop[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

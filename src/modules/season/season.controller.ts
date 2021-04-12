@@ -11,7 +11,8 @@ import {
 import { SeasonService } from './season.service';
 import { CreateSeasonDto } from './dto/create-season.dto';
 import { UpdateSeasonDto } from './dto/update-season.dto';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { GetSeasonDataDto } from './dto/get-season-data.dto';
+import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guards/jwt.guard';
 import { GetUser } from '../../core/decorators/getUser.decorator';
 import { User } from '../users/user.entity';
@@ -21,6 +22,7 @@ import { User } from '../users/user.entity';
 export class SeasonController {
   constructor(private readonly seasonService: SeasonService) {}
 
+  @ApiOperation({ summary: 'Start Season' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -28,15 +30,12 @@ export class SeasonController {
     return this.seasonService.create(createSeasonDto, user.id);
   }
 
+  @ApiOperation({ summary: 'End Season' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post(':seasonId')
-  close(
-    @Body() createSeasonDto: CreateSeasonDto,
-    @Param('seasonId') seasonId: string,
-    @GetUser() user: User,
-  ) {
-    return this.seasonService.close(createSeasonDto, user.id, seasonId);
+  @Post('end')
+  close(@Body() getSeasonDataDto: GetSeasonDataDto, @GetUser() user: User) {
+    return this.seasonService.close(getSeasonDataDto, user.id);
   }
 
   @ApiBearerAuth()
@@ -44,6 +43,17 @@ export class SeasonController {
   @Get(':cropId')
   findAllSeasonOfCrop(@Param('cropId') cropId: string, @GetUser() user: User) {
     return this.seasonService.findAllSeasonOfCrop(cropId, user.id);
+  }
+
+  @ApiOperation({ summary: 'Get all data in crop on season' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('crop')
+  GetDataOfSeason(
+    @Body() getSeasonDataDto: GetSeasonDataDto,
+    @GetUser() user: User,
+  ) {
+    return this.seasonService.GetDataOfSeason(getSeasonDataDto, user.id);
   }
 
   @Get(':id')

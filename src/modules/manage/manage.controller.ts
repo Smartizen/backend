@@ -9,12 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ManageService } from './manage.service';
+import { CreateManageDto } from './dto/create-manage.dto';
 import { UpdateManageDto } from './dto/update-manage.dto';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { SignUpDto } from '../auth/dto/auth.dto';
 import { JwtAuthGuard } from '../../core/guards/jwt.guard';
 import { GetUser } from '../../core/decorators/getUser.decorator';
 import { User } from '../users/user.entity';
+import { use } from 'passport';
 
 @ApiTags('Manage')
 @Controller('manage')
@@ -23,13 +25,21 @@ export class ManageController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post(':farmId')
+  @Post('createNew/:farmId')
   create(
     @Body() signUpDto: SignUpDto,
     @Param('farmId') farmId: string,
     @GetUser() user: User,
   ) {
     return this.manageService.create(signUpDto, user.id, farmId);
+  }
+
+  @ApiOperation({ summary: 'Add user by email' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('addByEmail')
+  addMember(@Body() createManageDto: CreateManageDto, @GetUser() user: User) {
+    return this.manageService.addByEmail(createManageDto, user.id);
   }
 
   @ApiOperation({ summary: 'Get All Staff In My Farm' })

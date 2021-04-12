@@ -1,4 +1,4 @@
-import { IsOptional, IsUUID, IsString, IsNotEmpty } from 'class-validator';
+import { IsOptional, IsUUID, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateDeviceBelongDto {
@@ -9,6 +9,5 @@ export class CreateDeviceBelongDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsUUID()
   deviceId: string;
 }

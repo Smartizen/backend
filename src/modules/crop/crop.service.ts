@@ -21,7 +21,7 @@ export class CropService {
     if (!!userOwns) {
       let corp = new Crop(createCropDto);
       let newCrop = await corp.save();
-      return { status: 200, data: newCrop };
+      return newCrop;
     } else {
       return { status: 401, message: 'User not belong this farm' };
     }

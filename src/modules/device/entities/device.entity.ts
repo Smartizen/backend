@@ -19,7 +19,6 @@ import { DeviceType } from '../../device-type/entities/device-type.entity';
 
 @Table
 export class Device extends Model<Device> {
-  @PrimaryKey
   @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
   id: string;
 
@@ -30,6 +29,7 @@ export class Device extends Model<Device> {
   @BelongsTo(() => DeviceType)
   deviceType: DeviceType;
 
+  @PrimaryKey
   @Column({ allowNull: false })
   deviceId: string;
 

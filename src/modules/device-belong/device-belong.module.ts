@@ -9,5 +9,6 @@ import { CropModule } from '../crop/crop.module';
   imports: [DatabaseModule, CropModule],
   controllers: [DeviceBelongController],
   providers: [DeviceBelongService, ...deviceBelongProviders],
+  exports: [DeviceBelongService],
 })
 export class DeviceBelongModule {}
