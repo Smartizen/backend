@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { Farm } from '../../farm/entities/farm.entity';
 import { Season } from '../../season/entities/season.entity';
-import { DeviceBelong } from '../../device-belong/entities/device-belong.entity';
+import { Active } from '../../active/entities/active.entity';
 
 @Table
 export class Crop extends Model<Crop> {
@@ -37,8 +37,8 @@ export class Crop extends Model<Crop> {
   @HasMany(() => Season)
   seasons: Season[];
 
-  @HasMany(() => DeviceBelong)
-  devices: DeviceBelong[];
+  @HasMany(() => Active)
+  devices: Active[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

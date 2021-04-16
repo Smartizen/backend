@@ -6,9 +6,9 @@ import { Manage } from '../manage/entities/manage.entity';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { Crop } from '../crop/entities/crop.entity';
-import { DeviceBelong } from '../device-belong/entities/device-belong.entity';
 import { Sequelize } from 'sequelize';
 import sequelize = require('sequelize');
+import { Active } from '../active/entities/active.entity';
 
 @Injectable()
 export class FarmService {
@@ -67,7 +67,7 @@ export class FarmService {
           attributes: ['id', 'name'],
           include: [
             {
-              model: DeviceBelong,
+              model: Active,
             },
           ],
         },

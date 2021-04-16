@@ -4,7 +4,7 @@ import { UpdateManageDto } from './dto/update-manage.dto';
 import { Manage } from './entities/manage.entity';
 import { SignUpDto } from '../auth/dto/auth.dto';
 import { UsersService } from '../users/users.service';
-import { User } from '../users/user.entity';
+
 var bcrypt = require('bcryptjs');
 @Injectable()
 export class ManageService {
