@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateDeviceBelongDto } from './dto/create-device-belong.dto';
 import { UpdateDeviceBelongDto } from './dto/update-device-belong.dto';
 import { DeviceBelong } from './entities/device-belong.entity';
@@ -17,10 +17,20 @@ export class DeviceBelongService {
   async create(createDeviceBelongDto: CreateDeviceBelongDto, userId: string) {
     let { cropId, deviceId } = createDeviceBelongDto;
     if (this.cropService.isUserOwnCrop(cropId, userId)) {
-      let belong = new DeviceBelong({ cropId, deviceId });
-      let NewBelong = await belong.save();
-
-      return { status: 200, data: NewBelong };
+      try {
+        let belong = new DeviceBelong({ cropId, deviceId });
+        let NewBelong = await belong.save();
+        return { status: 200, data: NewBelong };
+      } catch (error) {
+        if (error.original.code === '23503') {
+          throw new HttpException(
+            {
+              message: 'This device not exits or banned',
+            },
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      }
     } else {
       return { status: 401, message: "You don't have right to add device" };
     }
