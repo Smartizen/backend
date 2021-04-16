@@ -9,10 +9,12 @@ import {
   DeletedAt,
   HasMany,
   Unique,
+  BelongsToMany,
 } from 'sequelize-typescript';
 
 import { Device } from '../../device/entities/device.entity';
-import { Command } from '../../command/entities/command.entity';
+import { Function } from '../../function/entities/function.entity';
+import { Feature } from '../../feature/entities/feature.entity';
 
 @Table
 export class DeviceType extends Model<DeviceType> {
@@ -27,8 +29,8 @@ export class DeviceType extends Model<DeviceType> {
   @HasMany(() => Device)
   devices: Device[];
 
-  @HasMany(() => Command)
-  commands: Command[];
+  @BelongsToMany(() => Function, () => Feature)
+  functions: Function[];
 
   @Column
   description: string;

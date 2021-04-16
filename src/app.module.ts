@@ -9,10 +9,11 @@ import { FarmModule } from './modules/farm/farm.module';
 import { SeasonModule } from './modules/season/season.module';
 import { CropModule } from './modules/crop/crop.module';
 import { DeviceModule } from './modules/device/device.module';
-import { DeviceBelongModule } from './modules/device-belong/device-belong.module';
-import { BuyModule } from './modules/buy/buy.module';
 import { DeviceTypeModule } from './modules/device-type/device-type.module';
 import { CommandModule } from './modules/command/command.module';
+import { FeatureModule } from './modules/feature/feature.module';
+import { ActiveModule } from './modules/active/active.module';
+import { FunctionModule } from './modules/function/function.module';
 
 @Module({
   imports: [
@@ -25,10 +26,11 @@ import { CommandModule } from './modules/command/command.module';
     SeasonModule,
     CropModule,
     DeviceModule,
-    DeviceBelongModule,
-    BuyModule,
     DeviceTypeModule,
     CommandModule,
+    FunctionModule,
+    FeatureModule,
+    ActiveModule,
   ],
   controllers: [],
   providers: [],

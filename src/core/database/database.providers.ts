@@ -7,11 +7,11 @@ import { Manage } from '../../modules/manage/entities/manage.entity';
 import { Farm } from '../../modules/farm/entities/farm.entity';
 import { Season } from '../../modules/season/entities/season.entity';
 import { Crop } from '../../modules/crop/entities/crop.entity';
-import { DeviceBelong } from '../../modules/device-belong/entities/device-belong.entity';
 import { Device } from '../../modules/device/entities/device.entity';
 import { DeviceType } from '../../modules/device-type/entities/device-type.entity';
-import { Command } from '../../modules/command/entities/command.entity';
-import { Buy } from '../../modules/buy/entities/buy.entity';
+import { Function } from '../../modules/function/entities/function.entity';
+import { Feature } from '../../modules/feature/entities/feature.entity';
+import { Active } from '../../modules/active/entities/active.entity';
 
 export const databaseProviders = [
   {
@@ -38,11 +38,11 @@ export const databaseProviders = [
         Farm,
         Season,
         Crop,
-        DeviceBelong,
         Device,
         DeviceType,
-        Command,
-        Buy,
+        Function,
+        Feature,
+        Active,
       ]);
       await sequelize.sync();
       return sequelize;

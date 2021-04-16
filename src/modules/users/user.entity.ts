@@ -12,7 +12,6 @@ import {
 } from 'sequelize-typescript';
 import { Farm } from '../farm/entities/farm.entity';
 import { Device } from '../device/entities/device.entity';
-import { Buy } from '../buy/entities/buy.entity';
 import { Manage } from '../manage/entities/manage.entity';
 @Table
 export class User extends Model<User> {
@@ -83,9 +82,6 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => Farm, () => Manage)
   farms: Farm[];
-
-  @BelongsToMany(() => Device, () => Buy)
-  devices: Device[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

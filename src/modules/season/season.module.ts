@@ -4,10 +4,10 @@ import { SeasonController } from './season.controller';
 import { DatabaseModule } from '../../core/database/database.module';
 import { seasonProviders } from './season.provider';
 import { CropModule } from '../crop/crop.module';
-import { DeviceBelongModule } from '../device-belong/device-belong.module';
+import { ActiveModule } from '../active/active.module';
 
 @Module({
-  imports: [DatabaseModule, CropModule, DeviceBelongModule, HttpModule],
+  imports: [DatabaseModule, CropModule, ActiveModule, HttpModule],
   controllers: [SeasonController],
   providers: [SeasonService, ...seasonProviders],
 })

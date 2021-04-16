@@ -2,44 +2,33 @@ import {
   Table,
   Model,
   PrimaryKey,
-  ForeignKey,
   Column,
   DataType,
   CreatedAt,
   UpdatedAt,
   DeletedAt,
   BelongsToMany,
-  BelongsTo,
-  HasMany,
 } from 'sequelize-typescript';
-import { User } from '../../users/user.entity';
 import { DeviceType } from '../../device-type/entities/device-type.entity';
-import { Active } from '../../active/entities/active.entity';
+import { Feature } from '../../feature/entities/feature.entity';
 
 @Table
-export class Device extends Model<Device> {
+export class Function extends Model<Function> {
+  @PrimaryKey
   @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
   id: string;
 
-  @ForeignKey(() => DeviceType)
-  @Column
-  typeId: string;
+  @Column({ allowNull: true })
+  command: string;
 
-  @BelongsTo(() => DeviceType)
-  deviceType: DeviceType;
-
-  @PrimaryKey
   @Column({ allowNull: false })
-  deviceId: string;
-
-  @HasMany(() => Active)
-  active: Active[];
-
-  @Column
-  authToken: string;
+  name: string;
 
   @Column
   description: string;
+
+  @BelongsToMany(() => DeviceType, () => Feature)
+  deviceType: DeviceType[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

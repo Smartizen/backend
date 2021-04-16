@@ -4,7 +4,7 @@ import { UpdateSeasonDto } from './dto/update-season.dto';
 import { GetSeasonDataDto } from './dto/get-season-data.dto';
 import { Season } from './entities/season.entity';
 import { CropService } from '../crop/crop.service';
-import { DeviceBelongService } from '../device-belong/device-belong.service';
+import { ActiveService } from '../active/active.service';
 
 @Injectable()
 export class SeasonService {
@@ -13,7 +13,7 @@ export class SeasonService {
     private readonly seasonRepository: typeof Season,
 
     private readonly cropService: CropService,
-    private readonly deviceBelongService: DeviceBelongService,
+    private readonly activeService: ActiveService,
     private http: HttpService,
   ) {}
 
@@ -64,7 +64,7 @@ export class SeasonService {
       });
 
       // get device
-      let devices = await this.deviceBelongService.findAllDeviceInCrop(
+      let devices = await this.activeService.findAllDeviceInCrop(
         cropId,
         userId,
       );
