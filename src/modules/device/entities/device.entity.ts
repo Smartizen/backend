@@ -25,6 +25,12 @@ export class Device extends Model<Device> {
   @Column
   typeId: string;
 
+  @Column
+  authToken: string;
+
+  @Column
+  description: string;
+
   @BelongsTo(() => DeviceType)
   deviceType: DeviceType;
 
@@ -34,12 +40,6 @@ export class Device extends Model<Device> {
 
   @HasMany(() => Active)
   active: Active[];
-
-  @Column
-  authToken: string;
-
-  @Column
-  description: string;
 
   @CreatedAt
   @Column({ field: 'created_at' })

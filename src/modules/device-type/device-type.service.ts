@@ -3,7 +3,7 @@ import { CreateDeviceTypeDto } from './dto/create-device-type.dto';
 import { UpdateDeviceTypeDto } from './dto/update-device-type.dto';
 import { DeviceType } from './entities/device-type.entity';
 import { Device } from '../device/entities/device.entity';
-import { Command } from '../command/entities/command.entity';
+// import { Command } from '../command/entities/command.entity';
 
 @Injectable()
 export class DeviceTypeService {
@@ -40,17 +40,17 @@ export class DeviceTypeService {
     return device;
   }
 
-  async getAllCommand(typeId: string) {
-    const device = await this.deviceTypeRepository.findAll({
-      attributes: ['typeId'],
-      where: { typeId },
+  // async getAllCommand(typeId: string) {
+  //   const device = await this.deviceTypeRepository.findAll({
+  //     attributes: ['typeId'],
+  //     where: { typeId },
 
-      include: [
-        { model: Command, attributes: ['id', 'command', 'description'] },
-      ],
-    });
-    return device;
-  }
+  //     include: [
+  //       { model: Command, attributes: ['id', 'command', 'description'] },
+  //     ],
+  //   });
+  //   return device;
+  // }
 
   async findAll() {
     return this.deviceTypeRepository.findAll();

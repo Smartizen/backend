@@ -12,12 +12,4 @@ export class CreateDeviceDto {
 
   @ApiProperty()
   description: string;
-
-  @ApiProperty()
-  @IsInt()
-  price: number;
-
-  @ApiProperty()
-  @IsInt()
-  discount: number;
 }

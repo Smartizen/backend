@@ -20,15 +20,12 @@ export class DeviceService {
       .toPromise();
 
     let { typeId, deviceId, authToken } = res.data;
-    let { price, discount } = createDeviceDto;
     if (res.data.status === 200) {
       const deviceType = new Device({
         typeId,
         deviceId,
         authToken,
         description: createDeviceDto.description,
-        price,
-        discount,
       });
       deviceType.save();
     }
