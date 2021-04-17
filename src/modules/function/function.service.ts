@@ -10,23 +10,46 @@ export class FunctionService {
     private readonly functionRepository: typeof Function,
   ) {}
 
-  create(createFunctionDto: CreateFunctionDto) {
-    return 'This action adds a new function';
+  async create(createFunctionDto: CreateFunctionDto) {
+    try {
+      const command = new Function(createFunctionDto);
+      await command.save();
+      return { status: 200, message: 'Add command successfully' };
+    } catch (error) {
+      return { status: 400, error };
+    }
   }
 
-  findAll() {
-    return `This action returns all function`;
+  async findAll() {
+    try {
+      let functions = await this.functionRepository.findAll({
+        attributes: ['id', 'name', 'command', 'description'],
+      });
+      return functions;
+    } catch (error) {
+      return { status: 400, error };
+    }
   }
 
   findOne(id: number) {
     return `This action returns a #${id} function`;
   }
 
-  update(id: number, updateFunctionDto: UpdateFunctionDto) {
-    return `This action updates a #${id} function`;
+  update(id: string, updateFunctionDto: UpdateFunctionDto) {
+    try {
+      this.functionRepository.update(updateFunctionDto, { where: { id } });
+      return { status: 200, message: 'Update sucessfully' };
+    } catch (error) {
+      return { status: 400, message: error };
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} function`;
+  remove(id: string) {
+    try {
+      this.functionRepository.destroy({ where: { id } });
+      return { status: 200, message: 'Delete sucessfully' };
+    } catch (error) {
+      return { status: 400, message: error };
+    }
   }
 }

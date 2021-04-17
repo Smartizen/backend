@@ -4,11 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateFunctionDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
-  deviceTypeId: string;
-
-  @ApiProperty()
-  @IsString()
   @IsOptional()
   command: string;
 
