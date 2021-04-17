@@ -52,6 +52,6 @@ export class FeatureController {
   @UseGuards(JwtAuthGuard, IsAdmin)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.featureService.remove(+id);
+    return this.featureService.remove(id);
   }
 }

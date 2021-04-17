@@ -43,10 +43,9 @@ export class DeviceTypeController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, IsAdmin)
-  @Get('allCommand/:id')
+  @Get('allFeature/:id')
   getAllCommand(@Param('id') id: string) {
-    return 'get all function';
-    // return this.deviceTypeService.getAllCommand(id);
+    return this.deviceTypeService.getAllFeature(id);
   }
 
   @ApiBearerAuth()

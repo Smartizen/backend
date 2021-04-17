@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateFeatureDto } from './dto/create-feature.dto';
 import { UpdateFeatureDto } from './dto/update-feature.dto';
 import { Feature } from './entities/feature.entity';
@@ -10,8 +10,20 @@ export class FeatureService {
     private readonly featureRepository: typeof Feature,
   ) {}
 
-  create(createFeatureDto: CreateFeatureDto) {
-    return 'This action adds a new feature';
+  async create(createFeatureDto: CreateFeatureDto) {
+    try {
+      let feature = new Feature(createFeatureDto);
+      let NewFeature = await feature.save();
+
+      return { status: 200, data: NewFeature };
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: error,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   findAll() {
@@ -26,7 +38,12 @@ export class FeatureService {
     return `This action updates a #${id} feature`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} feature`;
+  remove(id: string) {
+    try {
+      this.featureRepository.destroy({ where: { id }, force: true });
+      return { status: 200, message: 'Delete sucessfully' };
+    } catch (error) {
+      return { status: 400, message: error };
+    }
   }
 }

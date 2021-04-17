@@ -10,5 +10,5 @@ export class CreateFeatureDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  function_id: string;
+  functionId: string;
 }
