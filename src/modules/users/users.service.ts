@@ -65,7 +65,7 @@ export class UsersService {
         include: [
           {
             model: Farm,
-            attributes: ['id', 'name', 'image', 'location'],
+            attributes: ['id', 'name', 'image', 'lat', 'long'],
             through: { attributes: [] },
           },
         ],
@@ -85,7 +85,7 @@ export class UsersService {
           {
             model: Farm,
             where: { id: farmId },
-            attributes: ['id', 'name', 'image', 'location'],
+            attributes: ['id', 'name', 'image', 'lat', 'long'],
             through: { attributes: [] },
             include: [{ model: Crop, attributes: ['id', 'name'] }],
           },
