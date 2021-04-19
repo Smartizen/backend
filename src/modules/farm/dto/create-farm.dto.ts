@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsLocale } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateFarmDto {
@@ -12,6 +12,10 @@ export class CreateFarmDto {
   image: string;
 
   @ApiProperty()
-  @IsOptional()
-  location: string;
+  @IsNotEmpty()
+  lat: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  long: string;
 }

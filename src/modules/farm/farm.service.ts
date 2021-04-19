@@ -6,8 +6,6 @@ import { Manage } from '../manage/entities/manage.entity';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { Crop } from '../crop/entities/crop.entity';
-import { Sequelize } from 'sequelize';
-import sequelize = require('sequelize');
 import { Active } from '../active/entities/active.entity';
 
 @Injectable()
@@ -35,7 +33,8 @@ export class FarmService {
           id: farm.id,
           name: farm.name,
           image: farm.image,
-          location: farm.location,
+          lat: farm.lat,
+          long: farm.long,
         },
         message: 'Create Successfully',
       };
@@ -54,7 +53,7 @@ export class FarmService {
 
   async findOne(id: string) {
     const farm = await this.farmRepository.findOne({
-      attributes: ['id', 'name', 'image', 'location'],
+      attributes: ['id', 'name', 'image', 'lat', 'long'],
       where: { id },
       include: [
         {
@@ -73,14 +72,22 @@ export class FarmService {
         },
       ],
     });
-    return farm;
+    return { farm };
   }
 
   update(id: number, updateFarmDto: UpdateFarmDto) {
     return `This action updates a #${id} farm`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} farm`;
+  async remove(id: string, user: any) {
+    try {
+      // TODO check role in house
+      this.farmRepository.destroy({ where: { id } });
+      return {
+        message: 'delete successfully',
+      };
+    } catch (error) {
+      return error;
+    }
   }
 }

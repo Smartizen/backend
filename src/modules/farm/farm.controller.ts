@@ -52,8 +52,10 @@ export class FarmController {
     return this.farmService.update(+id, updateFarmDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.farmService.remove(+id);
+  remove(@Param('id') id: string, @GetUser() user: User) {
+    return this.farmService.remove(id, user);
   }
 }

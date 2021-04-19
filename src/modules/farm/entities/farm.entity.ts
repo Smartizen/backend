@@ -20,7 +20,6 @@ export class Farm extends Model<Farm> {
   @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
   id: string;
 
-  @AllowNull
   @Column
   name: string;
 
@@ -28,9 +27,11 @@ export class Farm extends Model<Farm> {
   @Column
   image: string;
 
-  @AllowNull
   @Column
-  location: string;
+  lat: string;
+
+  @Column
+  long: string;
 
   @BelongsToMany(() => User, () => Manage)
   members: User[];
