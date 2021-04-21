@@ -40,7 +40,7 @@ export class ActiveController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.activeService.findOne(+id);
+    return this.activeService.findOne(id);
   }
 
   @Put(':id')
@@ -48,8 +48,10 @@ export class ActiveController {
     return this.activeService.update(+id, updateActiveDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.activeService.remove(+id);
+    return this.activeService.remove(id);
   }
 }

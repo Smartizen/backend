@@ -67,6 +67,7 @@ export class FarmService {
           include: [
             {
               model: Active,
+              attributes: ['deviceId'],
             },
           ],
         },

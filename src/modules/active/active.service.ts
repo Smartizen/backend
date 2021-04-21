@@ -11,15 +11,15 @@ export class ActiveService {
     private readonly cropService: CropService,
 
     @Inject('ActiveRepository')
-    private readonly deviceBelongRepository: typeof Active,
+    private readonly activeRepository: typeof Active,
   ) {}
 
   async create(createActiveDto: CreateActiveDto, userId: string) {
     let { cropId, deviceId } = createActiveDto;
     if (this.cropService.isUserOwnCrop(cropId, userId)) {
       try {
-        let belong = new Active({ cropId, deviceId });
-        let NewBelong = await belong.save();
+        let active = new Active({ cropId, deviceId });
+        let NewBelong = await active.save();
         return { status: 200, data: NewBelong };
       } catch (error) {
         if (error.original.code === '23503') {
@@ -38,7 +38,7 @@ export class ActiveService {
 
   async findAllDeviceInCrop(cropId: string, userId: string) {
     if (this.cropService.isUserOwnCrop(cropId, userId)) {
-      let data = await this.deviceBelongRepository.findAll({
+      let data = await this.activeRepository.findAll({
         where: { cropId },
         attributes: [],
         include: [
@@ -54,15 +54,27 @@ export class ActiveService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} active`;
+  async findOne(id: string) {
+    let data = await this.activeRepository.findOne({ where: { id } });
+    return { data };
   }
 
   update(id: number, updateActiveDto: UpdateActiveDto) {
     return `This action updates a #${id} active`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} active`;
+  async remove(id: string) {
+    // TODO set role for owner of house
+    try {
+      let data = await this.activeRepository.destroy({ where: { id } });
+      return { message: 'Device has been disabled' };
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: 'This device not exits or banned',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
