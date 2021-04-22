@@ -32,3 +32,9 @@ Options:
 
 Please specify a command
 ```
+
+## Divice QR code form
+
+```json
+{ "deviceId": "Device1", "deviceName": "thiết bị DV1" }
+```
