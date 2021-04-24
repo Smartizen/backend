@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateSeasonDto {
   @ApiProperty()
   @IsString()
-  cropId: string;
+  roomId: string;
 
   @ApiProperty()
   @IsString()

@@ -25,13 +25,13 @@ export class ManageController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('createNew/:farmId')
+  @Post('createNew/:houseId')
   create(
     @Body() signUpDto: SignUpDto,
-    @Param('farmId') farmId: string,
+    @Param('houseId') houseId: string,
     @GetUser() user: User,
   ) {
-    return this.manageService.create(signUpDto, user.id, farmId);
+    return this.manageService.create(signUpDto, user.id, houseId);
   }
 
   @ApiOperation({ summary: 'Add user by email' })
@@ -42,12 +42,12 @@ export class ManageController {
     return this.manageService.addByEmail(createManageDto, user.id);
   }
 
-  @ApiOperation({ summary: 'Get All Staff In My Farm' })
+  @ApiOperation({ summary: 'Get All Staff In My House' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get(':farmId')
-  getAllStaff(@Param('farmId') farmId: string, @GetUser() user: User) {
-    return this.manageService.getAllStaff(user.id, farmId);
+  @Get(':houseId')
+  getAllStaff(@Param('houseId') houseId: string, @GetUser() user: User) {
+    return this.manageService.getAllStaff(user.id, houseId);
   }
 
   @Get()

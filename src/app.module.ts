@@ -5,14 +5,14 @@ import { DatabaseModule } from './core/database/database.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ManageModule } from './modules/manage/manage.module';
-import { FarmModule } from './modules/farm/farm.module';
 import { SeasonModule } from './modules/season/season.module';
-import { CropModule } from './modules/crop/crop.module';
 import { DeviceModule } from './modules/device/device.module';
 import { DeviceTypeModule } from './modules/device-type/device-type.module';
 import { FeatureModule } from './modules/feature/feature.module';
 import { ActiveModule } from './modules/active/active.module';
 import { FunctionModule } from './modules/function/function.module';
+import { RoomModule } from './modules/room/room.module';
+import { HouseModule } from './modules/house/house.module';
 
 @Module({
   imports: [
@@ -21,14 +21,14 @@ import { FunctionModule } from './modules/function/function.module';
     UsersModule,
     AuthModule,
     ManageModule,
-    FarmModule,
     SeasonModule,
-    CropModule,
     DeviceModule,
     DeviceTypeModule,
     FunctionModule,
     FeatureModule,
     ActiveModule,
+    RoomModule,
+    HouseModule,
   ],
   controllers: [],
   providers: [],

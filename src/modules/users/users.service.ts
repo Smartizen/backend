@@ -2,8 +2,8 @@ import { Injectable, Inject } from '@nestjs/common';
 
 import { User } from './user.entity';
 import { USER_REPOSITORY } from '../../core/constants';
-import { Farm } from '../farm/entities/farm.entity';
-import { Crop } from '../crop/entities/crop.entity';
+import { House } from '../house/entities/house.entity';
+import { Room } from '../room/entities/room.entity';
 
 @Injectable()
 export class UsersService {
@@ -40,14 +40,14 @@ export class UsersService {
     return await this.userRepository.findOne<User>({ where: { id } });
   }
 
-  async isOwnFarm(farmId: string, userId: string) {
+  async isOwnHouse(houseId: string, userId: string) {
     try {
       let ishave = this.userRepository.findOne({
         where: { id: userId },
         include: [
           {
-            model: Farm,
-            where: { id: farmId },
+            model: House,
+            where: { id: houseId },
           },
         ],
       });
@@ -57,14 +57,14 @@ export class UsersService {
     }
   }
 
-  async myFarm(userId: string) {
+  async myHouse(userId: string) {
     try {
       let ishave = this.userRepository.findOne({
         where: { id: userId },
         attributes: [],
         include: [
           {
-            model: Farm,
+            model: House,
             attributes: ['id', 'name', 'image', 'lat', 'long'],
             through: { attributes: [] },
           },
@@ -76,18 +76,18 @@ export class UsersService {
     }
   }
 
-  async myCropByFarm(userId: string, farmId: string) {
+  async myRoomByHouse(userId: string, houseId: string) {
     try {
       let ishave = this.userRepository.findOne({
         where: { id: userId },
         attributes: [],
         include: [
           {
-            model: Farm,
-            where: { id: farmId },
+            model: House,
+            where: { id: houseId },
             attributes: ['id', 'name', 'image', 'lat', 'long'],
             through: { attributes: [] },
-            include: [{ model: Crop, attributes: ['id', 'name'] }],
+            include: [{ model: Room, attributes: ['id', 'name'] }],
           },
         ],
       });
@@ -97,7 +97,7 @@ export class UsersService {
     }
   }
 
-  async getAllMemberOfFarm(farmId: string) {
+  async getAllMemberOfHouse(houseId: string) {
     try {
       let member = this.userRepository.findAll({
         where: {},
@@ -112,8 +112,8 @@ export class UsersService {
         ],
         include: [
           {
-            model: Farm,
-            where: { id: farmId },
+            model: House,
+            where: { id: houseId },
             attributes: [],
           },
         ],

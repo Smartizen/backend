@@ -2,23 +2,23 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateActiveDto } from './dto/create-active.dto';
 import { UpdateActiveDto } from './dto/update-active.dto';
 import { Active } from './entities/active.entity';
-import { CropService } from '../crop/crop.service';
 import { Device } from '../device/entities/device.entity';
+import { RoomService } from '../room/room.service';
 
 @Injectable()
 export class ActiveService {
   constructor(
-    private readonly cropService: CropService,
+    private readonly roomService: RoomService,
 
     @Inject('ActiveRepository')
     private readonly activeRepository: typeof Active,
   ) {}
 
   async create(createActiveDto: CreateActiveDto, userId: string) {
-    let { cropId, deviceId } = createActiveDto;
-    if (this.cropService.isUserOwnCrop(cropId, userId)) {
+    let { roomId, deviceId } = createActiveDto;
+    if (this.roomService.isUserOwnRoom(roomId, userId)) {
       try {
-        let active = new Active({ cropId, deviceId });
+        let active = new Active({ roomId, deviceId });
         let NewBelong = await active.save();
         return { status: 200, data: NewBelong };
       } catch (error) {
@@ -36,10 +36,10 @@ export class ActiveService {
     }
   }
 
-  async findAllDeviceInCrop(cropId: string, userId: string) {
-    if (this.cropService.isUserOwnCrop(cropId, userId)) {
+  async findAllDeviceInRoom(roomId: string, userId: string) {
+    if (this.roomService.isUserOwnRoom(roomId, userId)) {
       let data = await this.activeRepository.findAll({
-        where: { cropId },
+        where: { roomId },
         attributes: [],
         include: [
           {

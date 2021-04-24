@@ -10,9 +10,8 @@ import {
   DeletedAt,
   BelongsToMany,
 } from 'sequelize-typescript';
-import { Farm } from '../farm/entities/farm.entity';
-import { Device } from '../device/entities/device.entity';
 import { Manage } from '../manage/entities/manage.entity';
+import { House } from '../house/entities/house.entity';
 @Table
 export class User extends Model<User> {
   @Column({
@@ -80,8 +79,8 @@ export class User extends Model<User> {
   })
   gender: string;
 
-  @BelongsToMany(() => Farm, () => Manage)
-  farms: Farm[];
+  @BelongsToMany(() => House, () => Manage)
+  houses: House[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

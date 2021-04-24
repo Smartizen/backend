@@ -8,5 +8,5 @@ export class CreateManageDto {
 
   @ApiProperty()
   @IsString()
-  farmId: string; // FarmId
+  houseId: string; // HouseId
 }

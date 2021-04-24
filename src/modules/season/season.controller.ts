@@ -40,15 +40,15 @@ export class SeasonController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get(':cropId')
-  findAllSeasonOfCrop(@Param('cropId') cropId: string, @GetUser() user: User) {
-    return this.seasonService.findAllSeasonOfCrop(cropId, user.id);
+  @Get(':roomId')
+  findAllSeasonOfRoom(@Param('roomId') roomId: string, @GetUser() user: User) {
+    return this.seasonService.findAllSeasonOfRoom(roomId, user.id);
   }
 
-  @ApiOperation({ summary: 'Get all data in crop on season' })
+  @ApiOperation({ summary: 'Get all data in room on season' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('crop')
+  @Post('room')
   GetDataOfSeason(
     @Body() getSeasonDataDto: GetSeasonDataDto,
     @GetUser() user: User,

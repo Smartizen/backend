@@ -2,13 +2,12 @@ import {
   Table,
   Model,
   PrimaryKey,
-  AutoIncrement,
   Column,
   DataType,
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { Crop } from '../../crop/entities/crop.entity';
+import { Room } from '../../room/entities/room.entity';
 
 @Table
 export class Season extends Model<Season> {
@@ -16,9 +15,9 @@ export class Season extends Model<Season> {
   @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
   id: string;
 
-  @ForeignKey(() => Crop)
+  @ForeignKey(() => Room)
   @Column(DataType.UUID)
-  cropId: string;
+  roomId: string;
 
   @Column(DataType.DATE)
   startTime: Date;
@@ -32,6 +31,6 @@ export class Season extends Model<Season> {
   @Column
   plant: string;
 
-  @BelongsTo(() => Crop)
-  crop: Crop;
+  @BelongsTo(() => Room)
+  room: Room;
 }

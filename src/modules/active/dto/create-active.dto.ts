@@ -5,7 +5,7 @@ export class CreateActiveDto {
   @ApiProperty()
   @IsOptional()
   @IsUUID()
-  cropId: string;
+  roomId: string;
 
   @ApiProperty()
   @IsNotEmpty()

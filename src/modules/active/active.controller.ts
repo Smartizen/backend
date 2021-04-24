@@ -33,9 +33,9 @@ export class ActiveController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get(':cropId')
-  findAll(@Param('cropId') cropId: string, @GetUser() user: User) {
-    return this.activeService.findAllDeviceInCrop(cropId, user.id);
+  @Get(':roomId')
+  findAll(@Param('roomId') roomId: string, @GetUser() user: User) {
+    return this.activeService.findAllDeviceInRoom(roomId, user.id);
   }
 
   @Get(':id')

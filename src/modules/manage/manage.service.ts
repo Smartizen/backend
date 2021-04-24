@@ -15,10 +15,10 @@ export class ManageService {
     private readonly manageRepository: typeof Manage,
   ) {}
 
-  async create(signUpDto: SignUpDto, userId: string, farmId: string) {
+  async create(signUpDto: SignUpDto, userId: string, houseId: string) {
     const { firstname, lastname, email, password, gender } = signUpDto;
 
-    if (this.isAdminOfFarm(userId, farmId)) {
+    if (this.isAdminOfHouse(userId, houseId)) {
       // hash the password
       const hashedPass = await bcrypt.hashSync(password, 10);
       try {
@@ -33,7 +33,7 @@ export class ManageService {
         );
         const manage = new Manage({
           userId: newUser.id,
-          farmId,
+          houseId,
           role: 1,
         });
         manage.save();
@@ -53,12 +53,12 @@ export class ManageService {
   }
 
   async addByEmail(createManageDto: CreateManageDto, userId: string) {
-    let { farmId, email } = createManageDto;
-    if (this.isAdminOfFarm(userId, farmId)) {
+    let { houseId, email } = createManageDto;
+    if (this.isAdminOfHouse(userId, houseId)) {
       let user = await this.userService.findOneByEmail(email);
       const manage = new Manage({
         userId: user.id,
-        farmId,
+        houseId,
         role: 1,
       });
       manage.save();
@@ -74,12 +74,12 @@ export class ManageService {
     }
   }
 
-  async getAllStaff(userId: string, farmId: string) {
-    if (this.isMemberOfFarm(userId, farmId)) {
-      const staff = await this.userService.getAllMemberOfFarm(farmId);
+  async getAllStaff(userId: string, houseId: string) {
+    if (this.isMemberOfHouse(userId, houseId)) {
+      const staff = await this.userService.getAllMemberOfHouse(houseId);
       return staff;
     } else {
-      return { status: 400, message: "You're not member of this farm" };
+      return { status: 400, message: "You're not member of this house" };
     }
   }
 
@@ -100,20 +100,20 @@ export class ManageService {
     return `This action removes a #${id} manage`;
   }
 
-  async isAdminOfFarm(userId: string, farmId: string) {
+  async isAdminOfHouse(userId: string, houseId: string) {
     let isAdmin = await this.manageRepository.findOne({
       attributes: ['role'],
-      where: { userId, farmId },
+      where: { userId, houseId },
     });
 
     if (isAdmin.role === 0) return true;
     else return false;
   }
 
-  async isMemberOfFarm(userId: string, farmId: string) {
+  async isMemberOfHouse(userId: string, houseId: string) {
     let isMember = await this.manageRepository.findOne({
       attributes: ['role'],
-      where: { userId, farmId },
+      where: { userId, houseId },
     });
 
     return !!isMember;

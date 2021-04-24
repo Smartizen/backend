@@ -11,7 +11,7 @@ import {
   AllowNull,
 } from 'sequelize-typescript';
 import { User } from '../../users/user.entity';
-import { Farm } from '../../farm/entities/farm.entity';
+import { House } from '../../house/entities/house.entity';
 
 @Table
 export class Manage extends Model<Manage> {
@@ -25,9 +25,9 @@ export class Manage extends Model<Manage> {
   })
   userId: string;
 
-  @ForeignKey(() => Farm)
+  @ForeignKey(() => House)
   @Column(DataType.UUID)
-  farmId: string;
+  houseId: string;
 
   @AllowNull(false)
   @Column

@@ -3,8 +3,8 @@ import { CreateSeasonDto } from './dto/create-season.dto';
 import { UpdateSeasonDto } from './dto/update-season.dto';
 import { GetSeasonDataDto } from './dto/get-season-data.dto';
 import { Season } from './entities/season.entity';
-import { CropService } from '../crop/crop.service';
 import { ActiveService } from '../active/active.service';
+import { RoomService } from '../room/room.service';
 
 @Injectable()
 export class SeasonService {
@@ -12,16 +12,16 @@ export class SeasonService {
     @Inject('SeasonRepository')
     private readonly seasonRepository: typeof Season,
 
-    private readonly cropService: CropService,
+    private readonly roomService: RoomService,
     private readonly activeService: ActiveService,
     private http: HttpService,
   ) {}
 
   async create(createSeasonDto: CreateSeasonDto, userId: string) {
-    let { cropId, plant, description } = createSeasonDto;
-    if (await this.cropService.isUserOwnCrop(cropId, userId)) {
+    let { roomId, plant, description } = createSeasonDto;
+    if (await this.roomService.isUserOwnRoom(roomId, userId)) {
       let newSeason = new Season({
-        cropId,
+        roomId,
         plant,
         description,
         startTime: new Date(),
@@ -33,11 +33,11 @@ export class SeasonService {
   }
 
   async close(getSeasonDataDto: GetSeasonDataDto, userId: string) {
-    let { cropId, seasonId } = getSeasonDataDto;
-    if (await this.cropService.isUserOwnCrop(cropId, userId)) {
+    let { roomId, seasonId } = getSeasonDataDto;
+    if (await this.roomService.isUserOwnRoom(roomId, userId)) {
       await this.seasonRepository.update(
         { endTime: new Date() },
-        { where: { id: seasonId, cropId } },
+        { where: { id: seasonId, roomId } },
       );
       return { status: 200, message: 'Update Successfuly' };
     } else {
@@ -45,9 +45,9 @@ export class SeasonService {
     }
   }
 
-  async findAllSeasonOfCrop(cropId, userId) {
-    if (await this.cropService.isUserOwnCrop(cropId, userId)) {
-      let res = await this.seasonRepository.findAll({ where: { cropId } });
+  async findAllSeasonOfRoom(roomId, userId) {
+    if (await this.roomService.isUserOwnRoom(roomId, userId)) {
+      let res = await this.seasonRepository.findAll({ where: { roomId } });
       return { status: 200, data: res };
     } else {
       return { status: 401, message: "You don't have rights to create season" };
@@ -55,8 +55,8 @@ export class SeasonService {
   }
 
   async GetDataOfSeason(getSeasonDataDto: GetSeasonDataDto, userId: string) {
-    let { cropId, seasonId } = getSeasonDataDto;
-    if (await this.cropService.isUserOwnCrop(cropId, userId)) {
+    let { roomId, seasonId } = getSeasonDataDto;
+    if (await this.roomService.isUserOwnRoom(roomId, userId)) {
       // get time
       let time = await this.seasonRepository.findOne({
         where: { id: seasonId },
@@ -64,12 +64,12 @@ export class SeasonService {
       });
 
       // get device
-      let devices = await this.activeService.findAllDeviceInCrop(
-        cropId,
+      let devices = await this.activeService.findAllDeviceInRoom(
+        roomId,
         userId,
       );
       let deviceId = devices.data.map(data => data.device.deviceId);
-      let cropData = await this.http
+      let roomData = await this.http
         .post(process.env.SENSOR_BACKEND_URL + '/data/hour', {
           deviceId,
           from: time.startTime.getTime(),
@@ -77,7 +77,7 @@ export class SeasonService {
         })
         .toPromise();
 
-      return { status: 200, data: cropData.data };
+      return { status: 200, data: roomData.data };
     } else {
       return { status: 401, message: "You don't have rights to create season" };
     }

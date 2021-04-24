@@ -7,8 +7,8 @@ import {
   DataType,
   PrimaryKey,
 } from 'sequelize-typescript';
-import { Crop } from '../../crop/entities/crop.entity';
 import { Device } from '../../device/entities/device.entity';
+import { Room } from '../../room/entities/room.entity';
 
 @Table
 export class Active extends Model<Active> {
@@ -16,9 +16,9 @@ export class Active extends Model<Active> {
   @Column({ defaultValue: DataType.UUIDV4, type: DataType.UUID })
   id: string;
 
-  @ForeignKey(() => Crop)
+  @ForeignKey(() => Room)
   @Column(DataType.UUID)
-  cropId: string;
+  roomId: string;
 
   @ForeignKey(() => Device)
   @Column
@@ -27,6 +27,6 @@ export class Active extends Model<Active> {
   @BelongsTo(() => Device, 'deviceId')
   device: Device;
 
-  @BelongsTo(() => Crop)
-  crop: Crop;
+  @BelongsTo(() => Room)
+  room: Room;
 }
