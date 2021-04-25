@@ -39,8 +39,8 @@ export class Room extends Model<Room> {
   @HasMany(() => Season)
   seasons: Season[];
 
-  // @HasMany(() => Active)
-  // devices: Active[];
+  @HasMany(() => Active)
+  actives: Active[];
 
   @BelongsToMany(() => Device, () => Active)
   devices: Device[];
