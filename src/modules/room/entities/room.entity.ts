@@ -10,10 +10,12 @@ import {
   CreatedAt,
   UpdatedAt,
   DeletedAt,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { Season } from '../../season/entities/season.entity';
 import { Active } from '../../active/entities/active.entity';
 import { House } from '../../house/entities/house.entity';
+import { Device } from '../../device/entities/device.entity';
 
 @Table
 export class Room extends Model<Room> {
@@ -37,8 +39,11 @@ export class Room extends Model<Room> {
   @HasMany(() => Season)
   seasons: Season[];
 
-  @HasMany(() => Active)
-  devices: Active[];
+  // @HasMany(() => Active)
+  // devices: Active[];
+
+  @BelongsToMany(() => Device, () => Active)
+  devices: Device[];
 
   @CreatedAt
   @Column({ field: 'created_at' })

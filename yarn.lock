@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@automapper/core@^3.5.2":
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/@automapper/core/-/core-3.5.2.tgz#0dc42bc36ab34c45e8a777b7434e6979a8fed333"
+  integrity sha512-9dZ5BaiwvJg6RtdU/LDo+6yEBha1tIoYDvn7gFpHlwQ364h696tRXzsLkxe8aP5cL6DPDYgC91o2ZibSJJCdGw==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"

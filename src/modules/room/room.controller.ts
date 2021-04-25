@@ -34,16 +34,18 @@ export class RoomController {
     return this.roomService.findAll();
   }
 
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // @Get('/:houseId')
+  // findAllMyRoom(@Param('houseId') houseId: string, @GetUser() user: User) {
+  //   return this.roomService.findAllMyRoom(user.id, houseId);
+  // }
+
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get(':houseId')
-  findAllMyRoom(@Param('houseId') houseId: string, @GetUser() user: User) {
-    return this.roomService.findAllMyRoom(user.id, houseId);
-  }
-
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomService.findOne(+id);
+  findOne(@Param('id') id: string, @GetUser() user: User) {
+    return this.roomService.findOne(id, user.id);
   }
 
   @Put(':id')

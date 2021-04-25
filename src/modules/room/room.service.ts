@@ -5,6 +5,9 @@ import { Room } from './entities/room.entity';
 import { UsersService } from '../users/users.service';
 import { House } from '../house/entities/house.entity';
 import { User } from '../users/user.entity';
+import { Device } from '../device/entities/device.entity';
+import { DeviceType } from '../device-type/entities/device-type.entity';
+import { Function } from '../function/entities/function.entity';
 
 @Injectable()
 export class RoomService {
@@ -35,8 +38,64 @@ export class RoomService {
     return await this.userService.myRoomByHouse(userId, houseId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} room`;
+  async findOne(roomId: string, userId: string) {
+    try {
+      // TODO check role in house
+      if (await this.isUserOwnRoom(roomId, userId)) {
+        let room = await this.roomRepository.findOne({
+          where: { id: roomId },
+          attributes: ['id', 'name', 'houseId'],
+          include: [
+            {
+              model: Device,
+              include: [
+                {
+                  model: DeviceType,
+                  include: [
+                    {
+                      model: Function,
+                      attributes: ['id', 'name', 'command', 'description'],
+                      through: { attributes: [] },
+                    },
+                  ],
+                },
+              ],
+              attributes: ['id', 'description', 'deviceId'],
+              through: { attributes: [] },
+            },
+          ],
+        });
+
+        // convert
+        let data = room.toJSON();
+
+        let newDevice = await data['devices'].map(device => {
+          device['functions'] = device.deviceType.functions;
+          delete device.deviceType;
+          return device;
+        });
+
+        data['devices'] = newDevice;
+
+        return {
+          data,
+        };
+      } else {
+        throw new HttpException(
+          {
+            message: "you're not the owner of this house",
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: error,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   update(id: number, updateRoomDto: UpdateRoomDto) {
