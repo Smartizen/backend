@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { Room } from './entities/room.entity';
@@ -43,8 +43,30 @@ export class RoomService {
     return `This action updates a #${id} room`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} room`;
+  remove(roomId: string, userId: string) {
+    try {
+      // TODO check role in houset
+      if (this.isUserOwnRoom(roomId, userId)) {
+        this.roomRepository.destroy({ where: { id: roomId } });
+        return {
+          message: 'delete successfully',
+        };
+      } else {
+        throw new HttpException(
+          {
+            message: "you're not the owner of this house",
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: error,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async isUserOwnRoom(roomId: string, userId) {

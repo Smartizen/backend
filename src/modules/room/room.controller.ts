@@ -51,8 +51,10 @@ export class RoomController {
     return this.roomService.update(+id, updateRoomDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roomService.remove(+id);
+  remove(@Param('id') id: string, @GetUser() user: User) {
+    return this.roomService.remove(id, user.id);
   }
 }
