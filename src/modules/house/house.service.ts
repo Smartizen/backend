@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateHouseDto } from './dto/create-house.dto';
 import { UpdateHouseDto } from './dto/update-house.dto';
 import { UsersService } from '../users/users.service';
@@ -80,15 +80,29 @@ export class HouseService {
     return `This action updates a #${id} house`;
   }
 
-  async remove(id: string, user: any) {
+  async remove(houseId: string, userId: any) {
     try {
-      // TODO check role in house
-      this.houseRepository.destroy({ where: { id } });
-      return {
-        message: 'delete successfully',
-      };
+      // TODO check role in houset
+      if (this.userService.isOwnHouse(houseId, userId)) {
+        this.houseRepository.destroy({ where: { id: houseId } });
+        return {
+          message: 'delete successfully',
+        };
+      } else {
+        throw new HttpException(
+          {
+            message: "you're not the owner of this house",
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     } catch (error) {
-      return error;
+      throw new HttpException(
+        {
+          message: error,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

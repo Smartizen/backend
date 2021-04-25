@@ -56,6 +56,6 @@ export class HouseController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @GetUser() user: User) {
-    return this.houseService.remove(id, user);
+    return this.houseService.remove(id, user.id);
   }
 }
