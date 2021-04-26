@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
 import { User } from './user.entity';
 import { USER_REPOSITORY } from '../../core/constants';
@@ -30,7 +30,21 @@ export class UsersService {
     return await user.save();
   }
 
-  // async updateUser()
+  async findAll(user: User) {
+    if (user.role === 0) {
+      let users = await this.userRepository.findAll({
+        where: { role: 1 },
+      });
+      return { data: users };
+    } else {
+      return new HttpException(
+        {
+          message: 'only admin can call this function',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 
   async findOneByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne<User>({ where: { email } });
