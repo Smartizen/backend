@@ -35,10 +35,10 @@ export class DeviceController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, IsAdmin)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.deviceService.findOne(+id);
+    return this.deviceService.findOne(id);
   }
 
   @ApiBearerAuth()

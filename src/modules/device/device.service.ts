@@ -2,6 +2,8 @@ import { Injectable, Inject, HttpService } from '@nestjs/common';
 import { CreateDeviceDto } from './dto/create-device.dto';
 import { UpdateDeviceDto } from './dto/update-device.dto';
 import { Device } from './entities/device.entity';
+import { DeviceType } from '../device-type/entities/device-type.entity';
+import { Function } from '../function/entities/function.entity';
 
 @Injectable()
 export class DeviceService {
@@ -37,8 +39,31 @@ export class DeviceService {
     return this.deviceRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} device`;
+  async findOne(id: string) {
+    let device = await this.deviceRepository.findOne({
+      where: { id },
+      attributes: ['deviceId', 'description'],
+      include: [
+        {
+          model: DeviceType,
+          include: [
+            {
+              model: Function,
+              attributes: ['id', 'name', 'command'],
+              through: { attributes: [] },
+            },
+          ],
+        },
+      ],
+    });
+
+    // convert
+    let data = device.toJSON();
+
+    data['functions'] = data['deviceType'].functions;
+    delete data['deviceType'];
+
+    return data;
   }
 
   update(id: number, updateDeviceDto: UpdateDeviceDto) {
