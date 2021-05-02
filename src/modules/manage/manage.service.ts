@@ -1,10 +1,11 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateManageDto } from './dto/create-manage.dto';
 import { UpdateManageDto } from './dto/update-manage.dto';
 import { Manage } from './entities/manage.entity';
 import { SignUpDto } from '../auth/dto/auth.dto';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user.entity';
+import { where } from 'sequelize';
 
 var bcrypt = require('bcryptjs');
 @Injectable()
@@ -65,13 +66,20 @@ export class ManageService {
       manage.save();
       let payload = {
         id: user.id,
+        manageId: manage.id,
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
+        role: 1,
       };
       return { status: 200, message: 'Add user successfully', data: payload };
     } else {
-      return { status: 400, message: "You can't add user" };
+      throw new HttpException(
+        {
+          message: "You don't have the right to add users",
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -97,8 +105,19 @@ export class ManageService {
     return `This action updates a #${id} manage`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} manage`;
+  async remove(id: string, userId: string) {
+    let manage = await this.manageRepository.findOne({ where: { id } });
+    if (this.isAdminOfHouse(userId, manage.houseId)) {
+      await this.manageRepository.destroy({ where: { id } });
+      return { message: 'Remove successfully' };
+    } else {
+      throw new HttpException(
+        {
+          message: "You don't have the right to remove user",
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async isAdminOfHouse(userId: string, houseId: string) {

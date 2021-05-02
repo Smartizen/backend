@@ -1,7 +1,6 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
 import { User } from './user.entity';
-import { USER_REPOSITORY } from '../../core/constants';
 import { House } from '../house/entities/house.entity';
 import { Room } from '../room/entities/room.entity';
 import { Manage } from '../manage/entities/manage.entity';
@@ -9,7 +8,7 @@ import { Manage } from '../manage/entities/manage.entity';
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepository: typeof User,
+    @Inject('userRepository') private readonly userRepository: typeof User,
   ) {}
 
   async create(
@@ -134,10 +133,28 @@ export class UsersService {
       });
 
       // convert
-      let data = members.map(member => {
-        member['role'] = member.houses[0]['Manage'].role;
-        delete member['houses'];
-        return member;
+      let data = await members.map(member => {
+        let newMember = {
+          id: null,
+          firstname: null,
+          lastname: null,
+          email: null,
+          image: null,
+          phonenumber: null,
+          gender: null,
+          role: null,
+          manageId: null,
+        };
+        newMember.id = member['id'];
+        newMember.firstname = member['firstname'];
+        newMember.lastname = member['lastname'];
+        newMember.email = member['email'];
+        newMember.image = member['image'];
+        newMember.phonenumber = member['phonenumber'];
+        newMember.gender = member['gender'];
+        newMember.role = member.houses[0]['Manage'].role;
+        newMember.manageId = member.houses[0]['Manage'].id;
+        return newMember;
       });
 
       return data;

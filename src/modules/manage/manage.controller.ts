@@ -65,8 +65,10 @@ export class ManageController {
     return this.manageService.update(+id, updateManageDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.manageService.remove(+id);
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete(':houseId')
+  remove(@Param('houseId') houseId: string, @GetUser() user: User) {
+    return this.manageService.remove(houseId, user.id);
   }
 }
