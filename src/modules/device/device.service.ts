@@ -39,17 +39,17 @@ export class DeviceService {
     return this.deviceRepository.findAll();
   }
 
-  async findOne(id: string) {
+  async findOne(deviceId: string) {
     let device = await this.deviceRepository.findOne({
-      where: { id },
-      attributes: ['deviceId', 'description'],
+      where: { deviceId },
+      attributes: ['id', 'deviceId', 'description'],
       include: [
         {
           model: DeviceType,
           include: [
             {
               model: Function,
-              attributes: ['id', 'name', 'command'],
+              attributes: ['id', 'name', 'command', 'description'],
               through: { attributes: [] },
             },
           ],
@@ -63,7 +63,7 @@ export class DeviceService {
     data['functions'] = data['deviceType'].functions;
     delete data['deviceType'];
 
-    return data;
+    return { data };
   }
 
   update(id: number, updateDeviceDto: UpdateDeviceDto) {

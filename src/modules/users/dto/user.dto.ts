@@ -10,6 +10,9 @@ import {
 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { BelongsToMany } from 'sequelize-typescript';
+import { House } from 'src/modules/house/entities/house.entity';
+import { Manage } from 'src/modules/manage/entities/manage.entity';
 
 enum Gender {
   MALE = 'male',
@@ -61,4 +64,7 @@ export class UserDto {
   @ApiPropertyOptional()
   @IsNotEmpty()
   readonly role: number;
+
+  @BelongsToMany(() => House, () => Manage)
+  houses: House[];
 }

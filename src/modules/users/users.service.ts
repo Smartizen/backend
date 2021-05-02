@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { USER_REPOSITORY } from '../../core/constants';
 import { House } from '../house/entities/house.entity';
 import { Room } from '../room/entities/room.entity';
+import { Manage } from '../manage/entities/manage.entity';
 
 @Injectable()
 export class UsersService {
@@ -113,7 +114,7 @@ export class UsersService {
 
   async getAllMemberOfHouse(houseId: string) {
     try {
-      let member = this.userRepository.findAll({
+      let members = await this.userRepository.findAll({
         where: {},
         attributes: [
           'id',
@@ -128,11 +129,18 @@ export class UsersService {
           {
             model: House,
             where: { id: houseId },
-            attributes: [],
           },
         ],
       });
-      return member;
+
+      // convert
+      let data = members.map(member => {
+        member['role'] = member.houses[0]['Manage'].role;
+        delete member['houses'];
+        return member;
+      });
+
+      return data;
     } catch (error) {
       return error;
     }

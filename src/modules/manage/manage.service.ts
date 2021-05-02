@@ -4,6 +4,7 @@ import { UpdateManageDto } from './dto/update-manage.dto';
 import { Manage } from './entities/manage.entity';
 import { SignUpDto } from '../auth/dto/auth.dto';
 import { UsersService } from '../users/users.service';
+import { User } from '../users/user.entity';
 
 var bcrypt = require('bcryptjs');
 @Injectable()
@@ -77,7 +78,7 @@ export class ManageService {
   async getAllStaff(userId: string, houseId: string) {
     if (this.isMemberOfHouse(userId, houseId)) {
       const staff = await this.userService.getAllMemberOfHouse(houseId);
-      return staff;
+      return { data: staff };
     } else {
       return { status: 400, message: "You're not member of this house" };
     }

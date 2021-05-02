@@ -20,9 +20,7 @@ export class Manage extends Model<Manage> {
   id: string;
 
   @ForeignKey(() => User)
-  @Column({
-    type: DataType.UUID,
-  })
+  @Column(DataType.UUID)
   userId: string;
 
   @ForeignKey(() => House)
