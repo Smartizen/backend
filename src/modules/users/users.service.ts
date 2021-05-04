@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { House } from '../house/entities/house.entity';
 import { Room } from '../room/entities/room.entity';
 import { Manage } from '../manage/entities/manage.entity';
+import { Device } from '../device/entities/device.entity';
 
 @Injectable()
 export class UsersService {
@@ -69,6 +70,24 @@ export class UsersService {
     } catch (error) {
       return error;
     }
+  }
+
+  async isOwnDevice(deviceId: string, userId: string) {
+    let ishave = this.userRepository.findOne({
+      where: { id: userId },
+      include: [
+        {
+          model: House,
+          include: [
+            {
+              model: Room,
+              include: [{ model: Device, where: { deviceId } }],
+            },
+          ],
+        },
+      ],
+    });
+    return !!ishave;
   }
 
   async myHouse(userId: string) {

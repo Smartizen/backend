@@ -11,9 +11,12 @@ import {
 import { DeviceService } from './device.service';
 import { CreateDeviceDto } from './dto/create-device.dto';
 import { UpdateDeviceDto } from './dto/update-device.dto';
+import { ControlDeviceDto } from './dto/control-device.dto';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guards/jwt.guard';
 import { IsAdmin } from '../../core/guards/IsAdmin.guard';
+import { GetUser } from '../../core/decorators/getUser.decorator';
+import { User } from '../users/user.entity';
 
 @ApiTags('Device')
 @Controller('device')
@@ -25,6 +28,16 @@ export class DeviceController {
   @Post()
   create(@Body() createDeviceDto: CreateDeviceDto) {
     return this.deviceService.create(createDeviceDto);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('/command')
+  controlDevice(
+    @Body() controlDevice: ControlDeviceDto,
+    @GetUser() user: User,
+  ) {
+    return this.deviceService.controlDevice(controlDevice, user.id);
   }
 
   @ApiBearerAuth()
