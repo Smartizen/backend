@@ -40,7 +40,7 @@ export class ActiveService {
     if (this.roomService.isUserOwnRoom(roomId, userId)) {
       let data = await this.activeRepository.findAll({
         where: { roomId },
-        attributes: [],
+        attributes: ['id'],
         include: [
           {
             model: Device,

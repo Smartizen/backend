@@ -61,7 +61,6 @@ export class RoomService {
                 },
               ],
               attributes: ['id', 'description', 'deviceId'],
-              through: { attributes: [] },
             },
           ],
         });
@@ -70,8 +69,10 @@ export class RoomService {
         let data = room.toJSON();
 
         let newDevice = await data['devices'].map(device => {
+          device['activeId'] = device.Active.id;
           device['functions'] = device.deviceType.functions;
           delete device.deviceType;
+          delete device.Active;
           return device;
         });
 
