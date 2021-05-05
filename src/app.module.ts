@@ -13,6 +13,7 @@ import { ActiveModule } from './modules/active/active.module';
 import { FunctionModule } from './modules/function/function.module';
 import { RoomModule } from './modules/room/room.module';
 import { HouseModule } from './modules/house/house.module';
+import { MessagingModule } from './modules/messaging/messaging.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { HouseModule } from './modules/house/house.module';
     ActiveModule,
     RoomModule,
     HouseModule,
+    MessagingModule,
   ],
   controllers: [],
   providers: [],
