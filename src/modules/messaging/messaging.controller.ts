@@ -15,6 +15,7 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guards/jwt.guard';
 import { User } from '../users/user.entity';
 import { GetUser } from '../../core/decorators/getUser.decorator';
+import { SendTokenDto } from './dto/send-token.dto';
 
 @ApiTags('Messaging')
 @Controller('messaging')
@@ -29,6 +30,20 @@ export class MessagingController {
     @GetUser() user: User,
   ) {
     return this.messagingService.create(createMessagingDto, user.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('/send-token')
+  sendToken(@Body() sendTokenDto: SendTokenDto, @GetUser() user: User) {
+    return this.messagingService.sendToken(sendTokenDto, user.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('/send-message')
+  sendMessage(@Body() sendTokenDto: SendTokenDto, @GetUser() user: User) {
+    return this.messagingService.sendMessage(user.id);
   }
 
   @ApiBearerAuth()

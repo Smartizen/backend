@@ -9,9 +9,11 @@ import {
   UpdatedAt,
   DeletedAt,
   BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
 import { Manage } from '../manage/entities/manage.entity';
 import { House } from '../house/entities/house.entity';
+import { Messaging } from '../messaging/entities/messaging.entity';
 @Table
 export class User extends Model<User> {
   @Column({
@@ -81,6 +83,9 @@ export class User extends Model<User> {
 
   @BelongsToMany(() => House, () => Manage)
   houses: House[];
+
+  @HasMany(() => Messaging)
+  notifications: Messaging[];
 
   @CreatedAt
   @Column({ field: 'created_at' })
