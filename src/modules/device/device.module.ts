@@ -9,5 +9,6 @@ import { UsersModule } from '../users/users.module';
   imports: [DatabaseModule, UsersModule, HttpModule],
   controllers: [DeviceController],
   providers: [DeviceService, ...deviceProviders],
+  exports: [DeviceService],
 })
 export class DeviceModule {}

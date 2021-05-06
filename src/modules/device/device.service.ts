@@ -12,6 +12,11 @@ import { Device } from './entities/device.entity';
 import { DeviceType } from '../device-type/entities/device-type.entity';
 import { Function } from '../function/entities/function.entity';
 import { UsersService } from '../users/users.service';
+import { Room } from '../room/entities/room.entity';
+import { House } from '../house/entities/house.entity';
+import { User } from '../users/user.entity';
+import { Messaging } from '../messaging/entities/messaging.entity';
+import { Active } from '../active/entities/active.entity';
 
 @Injectable()
 export class DeviceService {
@@ -126,5 +131,51 @@ export class DeviceService {
     } catch (error) {
       return error;
     }
+  }
+
+  async getOwnerOfDevice(deviceId: string) {
+    let device = await this.deviceRepository.findOne({
+      where: { deviceId },
+      attributes: ['id'],
+      include: [
+        {
+          model: Active,
+          attributes: ['id'],
+          include: [
+            {
+              model: Room,
+              attributes: ['id'],
+              include: [
+                {
+                  model: House,
+                  attributes: ['id'],
+                  include: [
+                    {
+                      model: User,
+                      attributes: ['id'],
+                      include: [{ model: Messaging, attributes: ['token'] }],
+                      through: { attributes: [] },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    let convertJson = device.toJSON();
+    let members = convertJson['active'][0]['room']['house']['members'];
+    let data = members.map(member => {
+      let notifications = member['notifications'].map(
+        notification => notification.token,
+      );
+      return notifications;
+    });
+
+    var merged = [].concat.apply([], data);
+
+    return merged;
   }
 }

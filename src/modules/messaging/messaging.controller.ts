@@ -16,6 +16,7 @@ import { JwtAuthGuard } from '../../core/guards/jwt.guard';
 import { User } from '../users/user.entity';
 import { GetUser } from '../../core/decorators/getUser.decorator';
 import { SendTokenDto } from './dto/send-token.dto';
+import { SendMessageDto } from './dto/send-message.dto';
 
 @ApiTags('Messaging')
 @Controller('messaging')
@@ -40,10 +41,9 @@ export class MessagingController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Post('/send-message')
-  sendMessage(@Body() sendTokenDto: SendTokenDto, @GetUser() user: User) {
-    return this.messagingService.sendMessage(user.id);
+  sendMessage(@Body() sendMessageDto: SendMessageDto) {
+    return this.messagingService.sendMessage(sendMessageDto);
   }
 
   @ApiBearerAuth()
