@@ -5,6 +5,7 @@ import { House } from '../house/entities/house.entity';
 import { Room } from '../room/entities/room.entity';
 import { Manage } from '../manage/entities/manage.entity';
 import { Device } from '../device/entities/device.entity';
+import { Messaging } from '../messaging/entities/messaging.entity';
 
 @Injectable()
 export class UsersService {

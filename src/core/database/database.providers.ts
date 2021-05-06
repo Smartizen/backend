@@ -12,6 +12,7 @@ import { Feature } from '../../modules/feature/entities/feature.entity';
 import { Active } from '../../modules/active/entities/active.entity';
 import { House } from '../../modules/house/entities/house.entity';
 import { Room } from '../../modules/room/entities/room.entity';
+import { Messaging } from '../../modules/messaging/entities/messaging.entity';
 
 export const databaseProviders = [
   {
@@ -36,6 +37,7 @@ export const databaseProviders = [
         User,
         Manage,
         House,
+        Messaging,
         Season,
         Room,
         Device,
