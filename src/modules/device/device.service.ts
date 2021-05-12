@@ -28,10 +28,10 @@ export class DeviceService {
     private http: HttpService,
   ) {}
 
-  async create(createDeviceDto: CreateDeviceDto) {
+  async createWatson(createDeviceDto: CreateDeviceDto) {
     let res = await this.http
       .post(
-        process.env.SENSOR_BACKEND_URL + '/admin/registerDevice',
+        process.env.SENSOR_BACKEND_URL + '/admin/registerDevice/watson',
         createDeviceDto,
       )
       .toPromise();
@@ -42,6 +42,29 @@ export class DeviceService {
         typeId,
         deviceId,
         authToken,
+        description: createDeviceDto.description,
+      });
+      deviceType.save();
+    }
+
+    return res.data;
+  }
+
+  async createSmartizen(createDeviceDto: CreateDeviceDto) {
+    let res = await this.http
+      .post(
+        process.env.SENSOR_BACKEND_URL + '/admin/registerDevice/smartizen',
+        createDeviceDto,
+      )
+      .toPromise();
+
+    let { typeId, deviceId, authToken, host } = res.data;
+    if (res.status === 200) {
+      const deviceType = new Device({
+        typeId,
+        deviceId,
+        authToken,
+        host,
         description: createDeviceDto.description,
       });
       deviceType.save();
@@ -117,13 +140,35 @@ export class DeviceService {
     return `This action updates a #${id} device`;
   }
 
-  async remove(typeId: string, deviceId: string) {
+  async removeWatson(typeId: string, deviceId: string) {
     try {
       let res = await this.http
-        .post(process.env.SENSOR_BACKEND_URL + '/admin/unRegisterDevice', {
-          typeId,
-          deviceId,
-        })
+        .post(
+          process.env.SENSOR_BACKEND_URL + '/admin/unRegisterDevice/watson',
+          {
+            typeId,
+            deviceId,
+          },
+        )
+        .toPromise();
+
+      this.deviceRepository.destroy({ where: { deviceId } });
+      return res.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async removeSmartizen(typeId: string, deviceId: string) {
+    try {
+      let res = await this.http
+        .post(
+          process.env.SENSOR_BACKEND_URL + '/admin/unRegisterDevice/smartizen',
+          {
+            typeId,
+            deviceId,
+          },
+        )
         .toPromise();
 
       this.deviceRepository.destroy({ where: { deviceId } });

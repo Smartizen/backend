@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { DeviceService } from './device.service';
 import { CreateDeviceDto } from './dto/create-device.dto';
+import { CreateDeviceSmartizenDto } from './dto/create-device-smartizen.dto';
 import { UpdateDeviceDto } from './dto/update-device.dto';
 import { ControlDeviceDto } from './dto/control-device.dto';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
@@ -25,9 +26,16 @@ export class DeviceController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, IsAdmin)
-  @Post()
-  create(@Body() createDeviceDto: CreateDeviceDto) {
-    return this.deviceService.create(createDeviceDto);
+  @Post('/watson')
+  createWatson(@Body() createDeviceDto: CreateDeviceDto) {
+    return this.deviceService.createWatson(createDeviceDto);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, IsAdmin)
+  @Post('/smartizen')
+  createSmartizen(@Body() createDeviceSmartizenDto: CreateDeviceSmartizenDto) {
+    return this.deviceService.createSmartizen(createDeviceSmartizenDto);
   }
 
   @ApiBearerAuth()
@@ -63,8 +71,21 @@ export class DeviceController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, IsAdmin)
-  @Delete(':typeId/:deviceId')
-  remove(@Param('typeId') typeId: string, @Param('deviceId') deviceId: string) {
-    return this.deviceService.remove(typeId, deviceId);
+  @Delete('/watson/:typeId/:deviceId')
+  removeWatson(
+    @Param('typeId') typeId: string,
+    @Param('deviceId') deviceId: string,
+  ) {
+    return this.deviceService.removeWatson(typeId, deviceId);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, IsAdmin)
+  @Delete('/smartizen/:typeId/:deviceId')
+  removeSmartizen(
+    @Param('typeId') typeId: string,
+    @Param('deviceId') deviceId: string,
+  ) {
+    return this.deviceService.removeSmartizen(typeId, deviceId);
   }
 }

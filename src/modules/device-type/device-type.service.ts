@@ -13,10 +13,11 @@ export class DeviceTypeService {
     private http: HttpService,
   ) {}
 
-  async create(createDeviceTypeDto: CreateDeviceTypeDto) {
+  // create deviceType for IBM Watson
+  async createIoTWatson(createDeviceTypeDto: CreateDeviceTypeDto) {
     let res = await this.http
       .post(
-        process.env.SENSOR_BACKEND_URL + '/admin/registerDeviceType',
+        process.env.SENSOR_BACKEND_URL + '/admin/registerDeviceType/watson',
         createDeviceTypeDto,
       )
       .toPromise();
@@ -25,6 +26,27 @@ export class DeviceTypeService {
       const deviceType = new DeviceType({
         typeId: res.data.typeId,
         description: createDeviceTypeDto.description,
+        platform: 'watson',
+      });
+      deviceType.save();
+    }
+    return res.data;
+  }
+
+  // create deviceType for Smartizen
+  async createSmatizen(createDeviceTypeDto: CreateDeviceTypeDto) {
+    let res = await this.http
+      .post(
+        process.env.SENSOR_BACKEND_URL + '/admin/registerDeviceType/smartizen',
+        createDeviceTypeDto,
+      )
+      .toPromise();
+
+    if (res.status === 200) {
+      const deviceType = new DeviceType({
+        typeId: res.data.typeId,
+        description: createDeviceTypeDto.description,
+        platform: 'smartizen',
       });
       deviceType.save();
     }
@@ -56,8 +78,8 @@ export class DeviceTypeService {
     return device;
   }
 
-  async findAll() {
-    return this.deviceTypeRepository.findAll();
+  async findAll(platform: string) {
+    return this.deviceTypeRepository.findAll({ where: { platform } });
   }
 
   findOne(id: number) {

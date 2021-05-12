@@ -22,16 +22,23 @@ export class DeviceTypeController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, IsAdmin)
-  @Post()
-  create(@Body() createDeviceTypeDto: CreateDeviceTypeDto) {
-    return this.deviceTypeService.create(createDeviceTypeDto);
+  @Post('/watson')
+  createIoTWatson(@Body() createDeviceTypeDto: CreateDeviceTypeDto) {
+    return this.deviceTypeService.createIoTWatson(createDeviceTypeDto);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, IsAdmin)
-  @Get()
-  findAll() {
-    return this.deviceTypeService.findAll();
+  @Post('/smartizen')
+  createSmatizen(@Body() createDeviceTypeDto: CreateDeviceTypeDto) {
+    return this.deviceTypeService.createSmatizen(createDeviceTypeDto);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, IsAdmin)
+  @Get(':platform')
+  findAll(@Param('platform') platform: string) {
+    return this.deviceTypeService.findAll(platform);
   }
 
   @ApiBearerAuth()

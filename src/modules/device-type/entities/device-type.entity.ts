@@ -35,6 +35,9 @@ export class DeviceType extends Model<DeviceType> {
   @Column
   description: string;
 
+  @Column
+  platform: string;
+
   @CreatedAt
   @Column({ field: 'created_at' })
   createdAt: Date;
