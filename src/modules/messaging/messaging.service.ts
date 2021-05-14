@@ -6,6 +6,7 @@ import { SendTokenDto } from './dto/send-token.dto';
 import { Messaging } from './entities/messaging.entity';
 import { SendMessageDto } from './dto/send-message.dto';
 import { DeviceService } from '../device/device.service';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class MessagingService {
@@ -14,16 +15,15 @@ export class MessagingService {
     private readonly messagingRepository: typeof Messaging,
 
     private readonly deviceService: DeviceService,
+    private readonly notificationService: NotificationService,
   ) {}
-
-  create(createMessagingDto: CreateMessagingDto, userId: string) {
-    return 'This action adds a new messaging';
-  }
 
   async sendMessage(sendMessageDto: SendMessageDto) {
     // Step 1 :
     let { deviceId, title, body } = sendMessageDto;
-    let tokensArray = await this.deviceService.getOwnerOfDevice(deviceId);
+    let { tokensArray, memberIds } = await this.deviceService.getOwnerOfDevice(
+      deviceId,
+    );
     // Step 2 :
 
     //Set up the sender with your GCM/FCM API key (declare this once for multiple messages)
@@ -43,7 +43,12 @@ export class MessagingService {
       else console.log(response);
     });
 
-    return tokensArray;
+    // Step 3 update notificaiton
+    memberIds.forEach(memberId => {
+      // let data = new CreateNotificationDto(memberId, title, body);
+      this.notificationService.create(memberId, title, body);
+    });
+    return { message: 'send notification successfully!' };
   }
 
   async sendToken(sendTokenDto: SendTokenDto, userId: string) {
@@ -67,25 +72,5 @@ export class MessagingService {
         HttpStatus.BAD_REQUEST,
       );
     }
-  }
-
-  findAllMessageByUser(userId: string) {
-    return 'tesstt';
-  }
-
-  findAll() {
-    return `This action returns all messaging`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} messaging`;
-  }
-
-  update(id: number, updateMessagingDto: UpdateMessagingDto) {
-    return `This action updates a #${id} messaging`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} messaging`;
   }
 }

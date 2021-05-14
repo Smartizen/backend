@@ -25,16 +25,6 @@ export class MessagingController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post()
-  create(
-    @Body() createMessagingDto: CreateMessagingDto,
-    @GetUser() user: User,
-  ) {
-    return this.messagingService.create(createMessagingDto, user.id);
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
   @Post('/send-token')
   sendToken(@Body() sendTokenDto: SendTokenDto, @GetUser() user: User) {
     return this.messagingService.sendToken(sendTokenDto, user.id);
@@ -45,26 +35,4 @@ export class MessagingController {
   sendMessage(@Body() sendMessageDto: SendMessageDto) {
     return this.messagingService.sendMessage(sendMessageDto);
   }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  findAllMessageByUser(@GetUser() user: User) {
-    return this.messagingService.findAllMessageByUser(user.id);
-  }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.messagingService.findOne(+id);
-  // }
-
-  // @Put(':id')
-  // update(@Param('id') id: string, @Body() updateMessagingDto: UpdateMessagingDto) {
-  //   return this.messagingService.update(+id, updateMessagingDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.messagingService.remove(+id);
-  // }
 }

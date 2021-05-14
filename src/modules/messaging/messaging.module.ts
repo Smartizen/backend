@@ -4,8 +4,9 @@ import { MessagingController } from './messaging.controller';
 import { DatabaseModule } from '../../core/database/database.module';
 import { messagingProviders } from './messaging.provider';
 import { DeviceModule } from '../device/device.module';
+import { NotificationModule } from '../notification/notification.module';
 @Module({
-  imports: [DatabaseModule, DeviceModule],
+  imports: [DatabaseModule, DeviceModule, NotificationModule],
   controllers: [MessagingController],
   providers: [MessagingService, ...messagingProviders],
 })
