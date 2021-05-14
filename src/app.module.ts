@@ -14,6 +14,7 @@ import { FunctionModule } from './modules/function/function.module';
 import { RoomModule } from './modules/room/room.module';
 import { HouseModule } from './modules/house/house.module';
 import { MessagingModule } from './modules/messaging/messaging.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { MessagingModule } from './modules/messaging/messaging.module';
     RoomModule,
     HouseModule,
     MessagingModule,
+    NotificationModule,
   ],
   controllers: [],
   providers: [],

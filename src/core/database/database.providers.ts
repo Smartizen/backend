@@ -13,6 +13,7 @@ import { Active } from '../../modules/active/entities/active.entity';
 import { House } from '../../modules/house/entities/house.entity';
 import { Room } from '../../modules/room/entities/room.entity';
 import { Messaging } from '../../modules/messaging/entities/messaging.entity';
+import { Notification } from '../../modules/notification/entities/notification.entity';
 
 export const databaseProviders = [
   {
@@ -38,6 +39,7 @@ export const databaseProviders = [
         Manage,
         House,
         Messaging,
+        Notification,
         Season,
         Room,
         Device,
