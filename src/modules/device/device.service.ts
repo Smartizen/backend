@@ -44,7 +44,7 @@ export class DeviceService {
         authToken,
         description: createDeviceDto.description,
       });
-      deviceType.save();
+      await deviceType.save();
     }
 
     return res.data;
@@ -67,7 +67,7 @@ export class DeviceService {
         host,
         description: createDeviceDto.description,
       });
-      deviceType.save();
+      await deviceType.save();
     }
 
     return res.data;
@@ -105,8 +105,10 @@ export class DeviceService {
     }
   }
 
-  findAll() {
-    return this.deviceRepository.findAll();
+  findAll(platform: string) {
+    return this.deviceRepository.findAll({
+      include: [{ model: DeviceType, where: { platform } }],
+    });
   }
 
   async findOne(deviceId: string) {
@@ -219,8 +221,10 @@ export class DeviceService {
       return notifications;
     });
 
+    let memberIds = members.map(member => member.id);
+
     var merged = [].concat.apply([], data);
 
-    return merged;
+    return { tokensArray: merged, memberIds };
   }
 }

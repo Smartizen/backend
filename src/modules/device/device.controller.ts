@@ -50,9 +50,9 @@ export class DeviceController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, IsAdmin)
-  @Get()
-  findAll() {
-    return this.deviceService.findAll();
+  @Get('platform/:platform')
+  findAll(@Param('platform') platform: string) {
+    return this.deviceService.findAll(platform);
   }
 
   @ApiBearerAuth()

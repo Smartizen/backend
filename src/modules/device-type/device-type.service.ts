@@ -28,7 +28,7 @@ export class DeviceTypeService {
         description: createDeviceTypeDto.description,
         platform: 'watson',
       });
-      deviceType.save();
+      await deviceType.save();
     }
     return res.data;
   }
@@ -48,7 +48,7 @@ export class DeviceTypeService {
         description: createDeviceTypeDto.description,
         platform: 'smartizen',
       });
-      deviceType.save();
+      await deviceType.save();
     }
     return res.data;
   }
