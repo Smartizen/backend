@@ -67,8 +67,8 @@ export class ManageController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete(':houseId')
-  remove(@Param('houseId') houseId: string, @GetUser() user: User) {
-    return this.manageService.remove(houseId, user.id);
+  @Delete(':manageId')
+  remove(@Param('manageId') manageId: string, @GetUser() user: User) {
+    return this.manageService.remove(manageId, user.id);
   }
 }

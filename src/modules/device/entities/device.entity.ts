@@ -48,8 +48,4 @@ export class Device extends Model<Device> {
   @UpdatedAt
   @Column({ field: 'updated_at' })
   updatedAt: Date;
-
-  @DeletedAt
-  @Column({ field: 'deleted_at' })
-  deletedAt: Date;
 }

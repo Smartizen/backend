@@ -23,6 +23,7 @@ export class ActiveService {
         return { status: 200, data: NewBelong };
       } catch (error) {
         if (error.original.code === '23503') {
+          console.log(error);
           throw new HttpException(
             {
               message: 'This device not exits or banned',

@@ -46,8 +46,4 @@ export class House extends Model<House> {
   @UpdatedAt
   @Column({ field: 'updated_at' })
   updatedAt: Date;
-
-  @DeletedAt
-  @Column({ field: 'deleted_at' })
-  deletedAt: Date;
 }

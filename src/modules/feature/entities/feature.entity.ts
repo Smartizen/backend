@@ -33,8 +33,4 @@ export class Feature extends Model<Feature> {
   @UpdatedAt
   @Column({ field: 'updated_at' })
   updatedAt: Date;
-
-  @DeletedAt
-  @Column({ field: 'deleted_at' })
-  deletedAt: Date;
 }

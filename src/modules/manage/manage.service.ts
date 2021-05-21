@@ -63,7 +63,7 @@ export class ManageService {
         houseId,
         role: 1,
       });
-      manage.save();
+      await manage.save();
       let payload = {
         id: user.id,
         manageId: manage.id,
@@ -105,10 +105,15 @@ export class ManageService {
     return `This action updates a #${id} manage`;
   }
 
-  async remove(id: string, userId: string) {
-    let manage = await this.manageRepository.findOne({ where: { id } });
+  async remove(manageId: string, userId: string) {
+    let manage = await this.manageRepository.findOne({
+      where: { id: manageId },
+    });
     if (this.isAdminOfHouse(userId, manage.houseId)) {
-      await this.manageRepository.destroy({ where: { id } });
+      await this.manageRepository.destroy({
+        where: { id: manageId },
+        force: true,
+      });
       return { message: 'Remove successfully' };
     } else {
       throw new HttpException(

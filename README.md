@@ -38,3 +38,9 @@ Please specify a command
 ```json
 { "deviceId": "Device1", "deviceName": "thiết bị DV1" }
 ```
+
+## Remove docker logs
+
+```sh
+sudo sh -c "truncate -s 0 /var/lib/docker/containers/*/*-json.log"
+```
