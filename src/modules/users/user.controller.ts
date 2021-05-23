@@ -55,7 +55,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @GetUser() user: User) {
-    return 'remove user';
+    return this.usersService.remove(id, user);
     // return this.usersService.remove(id, user.id);
   }
 }

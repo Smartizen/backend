@@ -84,6 +84,22 @@ export class UsersService {
     }
   }
 
+  async remove(id: string, user: User) {
+    if (user.role === 0) {
+      let users = await this.userRepository.destroy({
+        where: { id },
+      });
+      return { data: users };
+    } else {
+      return new HttpException(
+        {
+          message: 'only admin can call this function',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
   async findOneByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne<User>({ where: { email } });
   }
