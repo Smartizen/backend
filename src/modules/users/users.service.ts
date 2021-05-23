@@ -3,9 +3,8 @@ import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './user.entity';
 import { House } from '../house/entities/house.entity';
 import { Room } from '../room/entities/room.entity';
-import { Manage } from '../manage/entities/manage.entity';
 import { Device } from '../device/entities/device.entity';
-import { Messaging } from '../messaging/entities/messaging.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UsersService {
@@ -36,6 +35,43 @@ export class UsersService {
     if (user.role === 0) {
       let users = await this.userRepository.findAll({
         where: { role: 1 },
+      });
+      return { data: users };
+    } else {
+      return new HttpException(
+        {
+          message: 'only admin can call this function',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async countUser(user: User, unit: String) {
+    let day = new Date().getDate();
+    let month = new Date().getMonth();
+    let year = new Date().getFullYear();
+    let moment;
+    if (unit === 'day') moment = new Date(year, month, day).toISOString();
+    else if (unit === 'month') moment = new Date(year, month, 1).toISOString();
+    if (user.role === 0) {
+      let users = await this.userRepository.findAndCountAll({
+        where: {
+          role: 1,
+          created_at: {
+            [Op.gte]: moment,
+          },
+        },
+        attributes: [
+          'id',
+          'firstname',
+          'lastname',
+          'email',
+          'image',
+          'phonenumber',
+          'gender',
+          'created_at',
+        ],
       });
       return { data: users };
     } else {
