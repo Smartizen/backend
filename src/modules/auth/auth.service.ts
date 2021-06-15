@@ -45,6 +45,7 @@ export class AuthService {
       id: foundUser.id,
       firstname: foundUser.firstname,
       lastname: foundUser.lastname,
+      gender: foundUser.gender,
       email,
       role: foundUser.role,
     });
@@ -55,6 +56,7 @@ export class AuthService {
         firstname: foundUser.firstname,
         lastname: foundUser.lastname,
         email,
+        phonenumber: foundUser.phonenumber,
         role: foundUser.role,
       },
       token,
@@ -87,6 +89,7 @@ export class AuthService {
       user: {
         firstname,
         lastname,
+        phonenumber: '',
         email,
       },
       token,

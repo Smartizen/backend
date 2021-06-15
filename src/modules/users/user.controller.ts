@@ -9,6 +9,7 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
+import { UpdateUserInfoDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guards/jwt.guard';
@@ -45,11 +46,12 @@ export class UsersController {
     // return this.usersService.findOne(id, user.id);
   }
 
-  // @Put(':id')
-  // update(@Param('id') id: string) {
-  //   return 'change user data';
-  //   // return this.usersService.update(+id, updateRoomDto);
-  // }
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  update(@Body() updateUserInfoDto: UpdateUserInfoDto, @GetUser() user: User) {
+    return this.usersService.update(updateUserInfoDto, user);
+  }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

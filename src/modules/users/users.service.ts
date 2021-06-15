@@ -1,5 +1,6 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 
+import { UpdateUserInfoDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import { House } from '../house/entities/house.entity';
 import { Room } from '../room/entities/room.entity';
@@ -29,6 +30,23 @@ export class UsersService {
     user.role = role;
 
     return await user.save();
+  }
+
+  async update(updateUserInfoDto: UpdateUserInfoDto, user: User) {
+    await User.update(updateUserInfoDto, {
+      where: { id: user.id },
+    });
+
+    let newInfo = await User.findOne({ where: { id: user.id } });
+
+    return {
+      firstname: newInfo.firstname,
+      lastname: newInfo.lastname,
+      email: newInfo.email,
+      phonenumber: newInfo.phonenumber,
+      role: newInfo.role,
+      gender: newInfo.gender,
+    };
   }
 
   async findAll(user: User) {
