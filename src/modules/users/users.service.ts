@@ -6,6 +6,7 @@ import { House } from '../house/entities/house.entity';
 import { Room } from '../room/entities/room.entity';
 import { Device } from '../device/entities/device.entity';
 import { Op } from 'sequelize';
+import { deepStrictEqual } from 'assert';
 
 @Injectable()
 export class UsersService {
@@ -33,6 +34,10 @@ export class UsersService {
   }
 
   async update(updateUserInfoDto: UpdateUserInfoDto, user: User) {
+    for (const key in updateUserInfoDto) {
+      if (updateUserInfoDto[key].length == 0) delete updateUserInfoDto[key];
+    }
+
     await User.update(updateUserInfoDto, {
       where: { id: user.id },
     });
