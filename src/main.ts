@@ -20,7 +20,7 @@ async function bootstrap() {
   });
 
   const options = new DocumentBuilder()
-    .setTitle('Hydroponic API v1')
+    .setTitle('Smartizen API v1')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
